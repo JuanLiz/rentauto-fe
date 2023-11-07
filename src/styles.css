@@ -1,4 +1,5 @@
 .sidebar {
+    width: 280px;
     position: sticky;
     top: 0;
     height: 100vh;
@@ -10,4 +11,8 @@
 .content {
     overflow-y: auto;
     height: fit-content;
+}
+
+.bi-car-front {
+    font-size: 2rem;
 }

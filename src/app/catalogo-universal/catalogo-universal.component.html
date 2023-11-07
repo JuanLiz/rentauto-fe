@@ -2,73 +2,62 @@
 
 
   <!--Menu-->
-  <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+  <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-      <svg class="bi pe-none me-2" width="40" height="32">
-        <use xlink:href="#bootstrap"></use>
-      </svg>
-      <span class="fs-4">Sidebar</span>
+      <i class="bi bi-car-front me-2"></i>
+      <span class="fs-4">RentAuto</span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">
+        <a href="personas" class="nav-link link-body-emphasis" aria-current="page">
           <svg class="bi pe-none me-2" width="16" height="16">
             <use xlink:href="#home"></use>
           </svg>
-          Home
+          Personas
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link link-body-emphasis">
+        <a href="contactos" class="nav-link link-body-emphasis">
           <svg class="bi pe-none me-2" width="16" height="16">
             <use xlink:href="#speedometer2"></use>
           </svg>
-          Dashboard
+          Contactos
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link link-body-emphasis">
+        <a href="vehiculos" class="nav-link link-body-emphasis">
           <svg class="bi pe-none me-2" width="16" height="16">
             <use xlink:href="#table"></use>
           </svg>
-          Orders
+          Vehículos
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link link-body-emphasis">
+        <a href="sucursales" class="nav-link link-body-emphasis">
           <svg class="bi pe-none me-2" width="16" height="16">
             <use xlink:href="#grid"></use>
           </svg>
-          Products
+          Sucursales
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link link-body-emphasis">
+        <a href="reservas" class="nav-link link-body-emphasis">
           <svg class="bi pe-none me-2" width="16" height="16">
             <use xlink:href="#people-circle"></use>
           </svg>
-          Customers
+          Reservas
+        </a>
+      </li>
+      <li>
+        <a href="universal" class="nav-link active">
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#people-circle"></use>
+          </svg>
+          Catálogo Universal
         </a>
       </li>
     </ul>
-    <hr>
-    <div class="dropdown">
-      <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
-        data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-        <strong>mdo</strong>
-      </a>
-      <ul class="dropdown-menu text-small shadow">
-        <li><a class="dropdown-item" href="#">New project...</a></li>
-        <li><a class="dropdown-item" href="#">Settings</a></li>
-        <li><a class="dropdown-item" href="#">Profile</a></li>
-        <li>
-          <hr class="dropdown-divider">
-        </li>
-        <li><a class="dropdown-item" href="#">Sign out</a></li>
-      </ul>
-    </div>
   </div><!--End Menu-->
 
   <div class="w-100 d-flex flex-column">
@@ -78,7 +67,7 @@
         <h1>Catálogo Universal</h1>
       </div>
 
-      <div class="p-2 d-flex w-100 justify-content-center gap-3">
+      <div class="pt-5 pb-2 d-flex w-100 justify-content-center gap-3">
         <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offCanvasCreate"
           aria-controls="offCanvasCreate">
           <i class="bi bi-plus-square-fill me-2"></i>
@@ -116,7 +105,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="createUniversalTipo" class="form-label">Tipo de catálogo</label>
-                  <select class="form-select" formControlName="createUniversalTipo" (click)="ListarCatalogoE(1)">
+                  <select class="form-select" formControlName="createUniversalTipo">
                     <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
                       {{catalogo.denominacion_catalogo}}
                     </option>
@@ -141,7 +130,7 @@
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasUpdate" aria-labelledby="offCanvasUpdateLabel">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar un catálogo</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" (click)="updateUniversalGroup.reset(); universalFound[0]=null;"></button>
         </div>
         <div class="offcanvas-body h-100">
           <form (ngSubmit)="updateUniversal()" [formGroup]="updateUniversalGroup" class="h-100">
@@ -157,6 +146,13 @@
                   </select>
                 </div>
                 <div *ngFor="let found of universalFound">
+                  <div class="mb-3">
+                    <label for="createUniversalId" class="form-label">ID</label>
+                    <input type="text" class="form-control" id="basic-url" [attr.value]="found.id_catalogo"
+                    name="updateUniversalId" id="updateUniversalId" [value]="found.id_catalogo"
+                    formControlName="updateUniversalId" [attr.disabled]="true" readonly>
+                  </div>
+                  
                   <div class="mb-3">
                     <label for="createUniversalText" class="form-label">Denominación</label>
                     <input type="text" class="form-control" name="updateUniversalText" id="updateUniversalText"
@@ -198,9 +194,9 @@
             <!--Cabecera-->
             <thead>
               <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Deno</th>
-                <th scope="col">Llave</th>
+                <th scope="col">ID</th>
+                <th scope="col">Denominación</th>
+                <th scope="col">Tipo Catálogo</th>
               </tr>
             </thead>
 

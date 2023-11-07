@@ -27,59 +27,28 @@ export class CatalogoUniversalComponent implements OnInit {
       Router: Router
     ) { }
 
-  //------------------------------------------------------------
-  //LAS VARIABLES 
-  title = "MANEJO DE CATALOGO UNIVERSAL";    //Titulo dela página
-  tituloCataUniLista = "";             //Titulo Lista de todos los catalogos
-  titloCataUniBuscado = "";                //Titulo de Color Buscado
-  titloCataUniEditar = "";          //Titulo de Color a Editar
+  //***************************************************************************
+  // Definición de variables
 
-  Universal: any = [];               //Lista de todos los catalogos
-  UniversalTypes: any[] = [];        //Lista de todas las categorías
+  //Lista de todos los catalogos
+  Universal: any = [];
+  //Lista de todas las categorías        
+  UniversalTypes: any[] = [];
+  // Imprimir id de catálogo seleccionado
   selected: { [key: string]: string } = {};
+  // Catálogo a editar
+  universalFound: any = [];
+  //Saber si ya se cargaron los datos del backend
+  asyncReady = false;
 
-  CataUniCatalogo: any = [];        //Lista catalogo Catalogo
-  CataUniColor: any = [];           //Lista catalogo Color
-  UniversalipVehi: any = [];         //Lista catalogo TiposVehiculos
-
-  CataUniCatalogoSel: any = [];        //Lista catalogo Catalogo selecionado
-  CataUniColorSel: any = [];           //Lista el color selecionado
-  UniversalipVehiSel: any = [];         //Lista catalogo TiposVehiculos selecionado
-  universalFound: any = [];             // Registro del catalogo a editar
-
-  tablacatalogosstotales: any = [];          //Encabezados tabla catalogos totales
-
-  BuscarEvalor = 1;               //Control para carga del valor a buscar
-  controlLista = 1;               //Control para limpiar la lista
-
-  asyncReady = false;            //Control para sincronizar el llamado a los servicios
-
-  //*****************************************************************************
+  //***************************************************************************
   // Definición de formgroups para cada formulario
 
-
-  // Crear uno iterado
+  // Crear uno iterado para los tipos de catálogo
   universalTipos: any[] = [];
 
   // Crear un objeto para guardar los formgroups
   formGroups: { [key: string]: FormGroup } = {};
-
-
-  ListarCatTotales = new FormGroup
-    (
-      {
-
-      }
-    );
-
-  //Grupo para formulariomostrar catalogo de Catalogos
-  CBCatalogoCatalogo = new FormGroup
-    (
-      {
-        CatCatalogofiltro: new FormControl(),
-        textCatalogo: new FormControl()
-      }
-    );
 
   //Grupo para crear Catalogos
   insertUniversalGroup = new FormGroup
@@ -100,62 +69,10 @@ export class CatalogoUniversalComponent implements OnInit {
       }
     );
 
+  //***************************************************************************
+  // Definición de métodos
 
-  public loadData() {
-    this.asyncReady = false;
-    forkJoin([
-      this.servi.getUniversales(),
-      this.servi.getUniversalTipo('/' + 1),
-    ]).subscribe(([result1, result2]) => {
-      // Aquí puedes realizar acciones con los resultados de los observables
-      this.Universal = result1;
-      this.universalTipos = result2;
-
-
-      // Realiza otras acciones aquí después de que todos los observables se completen
-    },
-      error => { console.log(error) },
-      () => {
-        this.createFormGroups();
-        this.asyncReady = true;
-      }
-    );
-  }
-
-
-  //Lista de todos los catalogos
-
-  public consultaCatalogosTotales() {
-    if (this.controlLista == 1) {
-      this.servi.getUniversales().subscribe((data: { catalogouiversal: [] }) => {
-
-        this.Universal = data;  //JSON.parse(data);
-        this.tituloCataUniLista = "LISTA DE TODOS LOS CATALOGOS";
-        this.tablacatalogosstotales[0] = "Id";
-        this.tablacatalogosstotales[1] = "Denominación";
-        this.tablacatalogosstotales[2] = "LLaveForanea";
-      },
-        error => { console.error(error + " ") });
-    }
-    else {
-      this.Universal = null;
-      this.tituloCataUniLista = "";
-      this.tablacatalogosstotales[0] = "";
-      this.tablacatalogosstotales[1] = "";
-      this.tablacatalogosstotales[2] = "";
-      this.tablacatalogosstotales[3] = "";
-      this.controlLista = 1;
-    }
-
-  }
-
-  //--------------------------------------------------------------------------------------------->
-  //para Limpiar la lista
-
-  public LimpiarLista() {
-    this.controlLista = 0;
-  }
-
+  // Crear formgroups para cada catálogo
   createFormGroups() {
     this.universalTipos.forEach(catalogo => {
       const formGroup = this.formBuilder.group({
@@ -170,6 +87,28 @@ export class CatalogoUniversalComponent implements OnInit {
     })
   }
 
+
+  // Cargar datos del backend
+  public loadData() {
+    this.asyncReady = false;
+    forkJoin([
+      this.servi.getUniversales(),
+      this.servi.getUniversalTipo('/' + 1),
+    ]).subscribe(([result1, result2]) => {
+      // Aquí puedes realizar acciones con los resultados de los observables
+      this.Universal = result1;
+      this.universalTipos = result2;
+    },
+      error => { console.log(error) },
+      () => {
+        this.createFormGroups();
+        this.asyncReady = true;
+      }
+    );
+  }
+
+
+  // Imprimir id de catálogo seleccionado
   printId(idcatalogo: any) {
     console.log(idcatalogo)
     let val = this.formGroups[idcatalogo].getRawValue()['denominacion_catalogo']
@@ -177,30 +116,7 @@ export class CatalogoUniversalComponent implements OnInit {
   }
 
 
-  // -----------------------------------------------------------------------------------------
-  // Listar un solo tipo de Catalogo
-  //--------------------------------------------------------------
-  //Consulta un color por medio de su id.
-
-  public ListarCatalogoE(catip: any) {
-
-    this.servi.getUniversalTipo('/' + catip).subscribe((data: {}) => {
-      if (catip == 1) {
-        this.CataUniCatalogo = data;
-      }
-      else if (catip == 2) {
-        this.CataUniColor = data;
-      }
-      else if (catip == 3) {
-        this.UniversalipVehi = data;
-      }
-
-    },
-      error => { console.log(error) });
-
-  }
-
-
+  // Buscar catálogo por id
   public getById() {
     let idSearch = this.updateUniversalGroup.getRawValue()['updateUniversalId'];
 
@@ -219,27 +135,7 @@ export class CatalogoUniversalComponent implements OnInit {
     console.log(this.updateUniversalGroup)
   }
 
-
-  //--------------------------------------------------------------
-  //Consulta un catalogo por Id.
-
-  // public SelCataEditar() {
-  //   this.BuscarEvalor = this.updateUniversalGroup.getRawValue()['updateUniversalId'];
-
-  //   this.servi.getUniversal(this.BuscarEvalor).subscribe((data: any) => {
-
-  //     this.universalFound = data;
-  //     //console.log(" aca 45 " + this.universalFound.length + " y la data  " + data.length);
-  //     this.titloCataUniEditar = "CATALOGO A EDITAR";
-
-  //   },
-  //     error => { console.log(error) });
-
-
-  // }
-  //-------------------------------------------------------------------------
-  //Para insertar una nuevo catalogo
-
+  // Insertar un nuevo catálogo
   public insertUniversal() {
 
     //JSON armado
@@ -260,9 +156,8 @@ export class CatalogoUniversalComponent implements OnInit {
     this.loadData()
   }
 
-  // -----------------------------------------------------------------------------------------
-  // método para actualizar un catalogo .
 
+  // Actualizar un catálogo
   public updateUniversal() {
 
     //JSON armado
@@ -284,25 +179,12 @@ export class CatalogoUniversalComponent implements OnInit {
     this.loadData()
   }
 
-  //=============================================================
-  //LAS FUNCIONES PARA LLAMARLAS DESDE EL HTML
-  //=============================================================  
 
+  // OnInit. Acciones apenas inicia la página
   ngOnInit(): void {
 
     // Cargar datos del backend al abrir la página
     this.loadData()
-
-    this.ListarCatTotales = this.formBuilder.group(
-      {
-
-      });
-
-    this.CBCatalogoCatalogo = this.formBuilder.group(
-      {
-        CatCatalogofiltro: [],
-        textCatalogo: []
-      });
 
     this.insertUniversalGroup = this.formBuilder.group(
       {
