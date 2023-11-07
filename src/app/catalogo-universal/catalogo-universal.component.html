@@ -73,190 +73,211 @@
 
   <div class="w-100 d-flex flex-column">
     <div class="content container p-5">
-      <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
-      <ng-container *ngIf="asyncReady else loading">
 
-        <!--Contenedor de la tabla-->
-        <div class="table-container py-5">
-          <form (ngSubmit)="consultaCatalogosTotales()" [formGroup]="ListarCatTotales">
+      <div class="title">
+        <h1>Catálogo Universal</h1>
+      </div>
 
-            <button type="submit" style="margin-right: 30px">Listar todos los Catalogos</button>
-            <button (click)="LimpiarLista()" style="scroll-margin-left: 30px">Linpiar todos los Catalogos</button>
+      <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+        aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasRightLabel">Crear un catálogo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body h-100">
+          <form (ngSubmit)="insertUniversal()" [formGroup]="insertUniversalGroup" class="h-100">
+            <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+            <div class="w-100 h-100 mb-auto overflow-y-auto">
+              <div class="mb-3">
+                <label for="createUniversalText" class="form-label">Denominación</label>
+                <input type="text" class="form-control" name="createUniversalText" id="createUniversalText"
+                  formControlName="createUniversalText" placeholder="Ingresa un valor">
+              </div>
+              <div class="mb-3">
+                <label for="createUniversalTipo" class="form-label">Tipo de catálogo</label>
+                <select class="form-select" formControlName="createUniversalTipo" (click)="ListarCatalogoE(1)">
+                  <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
+                    {{catalogo.denominacion_catalogo}}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div style="max-height: 60px; min-height: 60px" class="d-flex justify-content-center order-2 w-100">
+              <div class="align-self-center w-100">
+                <button type="submit" class="btn btn-primary w-100">Crear</button>
+              </div>
+            </div>
+        </div>
+        </form>
+
+
+      </div>
+    </div>
+
+    <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
+    <ng-container *ngIf="asyncReady else loading">
+
+      <!--Contenedor de la tabla-->
+      <div class="table-container py-5">
+        <form (ngSubmit)="consultaCatalogosTotales()" [formGroup]="ListarCatTotales">
+
+          <button type="submit" style="margin-right: 30px">Listar todos los Catalogos</button>
+          <button (click)="LimpiarLista()" style="scroll-margin-left: 30px">Linpiar todos los Catalogos</button>
 
 
 
-            <h2>{{tituloCataUniLista}}</h2>
-            <table class="table table-dark table-striped">
-              <!-- <thead>
+          <h2>{{tituloCataUniLista}}</h2>
+          <table class="table table-dark table-striped">
+            <!-- <thead>
               <tr>
                 <th scope="col">{{tablacatalogosstotales[0]}}</th>
                 <th scope="col">{{tablacatalogosstotales[1]}}</th>
                 <th scope="col">{{tablacatalogosstotales[2]}}</th>
               </tr>
             </thead> -->
-              <thead>
-                <tr>
-                  <th scope="col">Id</th>
-                  <th scope="col">Deno</th>
-                  <th scope="col">Llave</th>
-                </tr>
-              </thead>
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Deno</th>
+                <th scope="col">Llave</th>
+              </tr>
+            </thead>
 
-              <tbody>
-                <tr *ngFor="let catu of Universal">
-                  <th scope="row"> {{ catu.id_catalogo }} </th>
-                  <td>{{ catu.denominacion_catalogo }} </td>
-                  <td>{{ catu.llave_foranea_catalogo}} </td>
-                </tr>
-              </tbody>
-            </table>
+            <tbody>
+              <tr *ngFor="let catu of Universal">
+                <th scope="row"> {{ catu.id_catalogo }} </th>
+                <td>{{ catu.denominacion_catalogo }} </td>
+                <td>{{ catu.llave_foranea_catalogo}} </td>
+              </tr>
+            </tbody>
+          </table>
 
-          </form>
-        </div><!--End Contenedor de la tabla-->
+        </form>
+      </div><!--End Contenedor de la tabla-->
 
-        <!--Contenedor del acordeón-->
-        <h2>Buscar ID por tipo de catálogo</h2>
-        <div class="accordion accordion-flush my-5" id="accordionFlushExample">
-          <div class="accordion-item" *ngFor="let catalogo of universalTipos">
-            <form [formGroup]="formGroups[catalogo.id_catalogo]">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  [attr.data-bs-target]="'#modal'+catalogo.id_catalogo" aria-expanded="false"
-                  [attr.aria-controls]="'#modal'+catalogo.id_catalogo">
-                  {{ catalogo.denominacion_catalogo }}
-                </button>
-              </h2>
-              <div [attr.id]="'modal'+catalogo.id_catalogo" class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample">
+      <!--Contenedor del acordeón-->
+      <h2>Buscar ID por tipo de catálogo</h2>
+      <div class="accordion accordion-flush my-5" id="accordionFlushExample">
+        <div class="accordion-item" *ngFor="let catalogo of universalTipos">
+          <form [formGroup]="formGroups[catalogo.id_catalogo]">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#modal'+catalogo.id_catalogo" aria-expanded="false"
+                [attr.aria-controls]="'#modal'+catalogo.id_catalogo">
+                {{ catalogo.denominacion_catalogo }}
+              </button>
+            </h2>
+            <div [attr.id]="'modal'+catalogo.id_catalogo" class="accordion-collapse collapse"
+              data-bs-parent="#accordionFlushExample">
 
-                <!--Contenido del acordeón-->
-                <div class="accordion-body row">
-                  <div class="col-8">
-                    <select class="form-select" formControlName="denominacion_catalogo"
-                      aria-label="Default select example">
-                      <option *ngFor="let item of formGroups[catalogo?.id_catalogo]?.get('lista')?.value"
-                        [value]="item.id_catalogo">
-                        {{item.denominacion_catalogo}}
-                      </option>
-                    </select>
-                  </div>
-                  <div class="col-2">
-                    <button (click)="printId(catalogo.id_catalogo)" class="btn btn-primary">Mostrar Valor</button>
-                  </div>
-                  <div class="col-2" *ngIf="selected[catalogo.id_catalogo]">
-                    <div class="input-group">
-                      <span class="input-group-text" id="basic-addon3">ID:</span>
-                      <input type="text" class="form-control" id="basic-url"
-                        aria-describedby="basic-addon3 basic-addon4" [attr.value]="selected[catalogo.id_catalogo]" disabled readonly >
-                    </div>
-                  </div>
-
+              <!--Contenido del acordeón-->
+              <div class="accordion-body row">
+                <div class="col-8">
+                  <select class="form-select" formControlName="denominacion_catalogo"
+                    aria-label="Default select example">
+                    <option *ngFor="let item of formGroups[catalogo?.id_catalogo]?.get('lista')?.value"
+                      [value]="item.id_catalogo">
+                      {{item.denominacion_catalogo}}
+                    </option>
+                  </select>
                 </div>
+                <div class="col-2">
+                  <button (click)="printId(catalogo.id_catalogo)" class="btn btn-primary">Buscar</button>
+                </div>
+                <div class="col-2" *ngIf="selected[catalogo.id_catalogo]">
+                  <div class="input-group">
+                    <span class="input-group-text" id="basic-addon3">ID:</span>
+                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3 basic-addon4"
+                      [attr.value]="selected[catalogo.id_catalogo]" disabled readonly>
+                  </div>
+                </div>
+
               </div>
-            </form>
+            </div>
+          </form>
 
 
-          </div>
+        </div>
 
-        </div><!--End Contenedor del acordeón-->
+      </div><!--End Contenedor del acordeón-->
 
-      </ng-container>
+    </ng-container>
 
-      <ng-template #loading>
-        loading...
-      </ng-template>
+    <ng-template #loading>
+      loading...
+    </ng-template>
 
-      <!--------------------------------------------------------------------------------------------->
-      <!-- para crear un nuevo Catalogo Universal -->
+    <!--------------------------------------------------------------------------------------------->
+    <!-- para crear un nuevo Catalogo Universal -->
 
-      <div class="creaU">
+    <div class="creaU">
 
-        <h2>Registrar un Nuevo Catalogo Universal</h2>
+      <h2>Registrar un Nuevo Catalogo Universal</h2>
 
-        <form (ngSubmit)="insertUniversal()" [formGroup]="insertUniversalGroup">
 
-          <!-- Los otros controles para la captura de los datos del Catalogo -->
-          <span class="spn_lbl">Denominación</span>
-          <label for="createUniversalText">
-            <input type="text" name="createUniversalText" id="createUniversalText"
-              formControlName="createUniversalText">
-          </label>
+    </div>
+    <br><br>
+
+
+    <!--------------------------------------------------------------------------------------------->
+    <!-- para Actualizar un Catalogo Universal -->
+
+    <div class="editU">
+
+      <h2>Modificar un Catalogo Universal</h2>
+
+      <form (ngSubmit)="updateUniversal()" [formGroup]="updateUniversalGroup">
+
+        <span class="spn_lbl">Catalogo a Editar</span>
+        <label>
+          <select class="dropdown2" formControlName="updateUniversalId" (change)="getById()">
+            <option *ngFor="let caese of Universal" [value]="caese.id_catalogo">
+              {{caese.denominacion_catalogo}} - {{caese.llave_foranea_catalogo}}
+            </option>
+          </select>
+        </label>
+        <br> <br>
+
+        <h2>{{titloCataUniEditar}}</h2>
+
+        <li *ngFor="let found of universalFound">
+
+          <br> <br>
+
+          <!-- Los otros controles para la captura de los datos deL cATALOGO -->
+
+          <span class="spn_lbl">Denominacion</span>
+          <label for="updateUniversalText">
+            <input type="text" name="updateUniversalText" id="updateUniversalText" value={{found.denominacion_catalogo}}
+              [value]="found.denominacion_catalogo" formControlName="updateUniversalText"></label>
 
 
           <span class="spn_lbl">Tipo de Catalogo</span>
-          <label for="createUniversalTipo">
-            <select class="dropdown" formControlName="createUniversalTipo" (click)="ListarCatalogoE(1)">
+          <label for="updateUniversalTipo">
+            <select class="dropdown" formControlName="updateUniversalTipo">
               <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
                 {{catalogo.denominacion_catalogo}}
               </option>
             </select>
+
           </label>
-          <br> <br>
-
-          <button type="submit">Nuevo Catalogo Universal</button>
-
-        </form>
-      </div>
-      <br><br>
-
-
-      <!--------------------------------------------------------------------------------------------->
-      <!-- para Actualizar un Catalogo Universal -->
-
-      <div class="editU">
-
-        <h2>Modificar un Catalogo Universal</h2>
-
-        <form (ngSubmit)="updateUniversal()" [formGroup]="updateUniversalGroup">
-
-          <span class="spn_lbl">Catalogo a Editar</span>
-          <label>
-            <select class="dropdown2" formControlName="updateUniversalId" (change)="getById()">
-              <option *ngFor="let caese of Universal" [value]="caese.id_catalogo">
-                {{caese.denominacion_catalogo}} - {{caese.llave_foranea_catalogo}}
-              </option>
-            </select>
-          </label>
-          <br> <br>
-
-          <h2>{{titloCataUniEditar}}</h2>
-
-          <li *ngFor="let found of universalFound">
-
-            <br> <br>
-
-            <!-- Los otros controles para la captura de los datos deL cATALOGO -->
-
-            <span class="spn_lbl">Denominacion</span>
-            <label for="updateUniversalText">
-              <input type="text" name="updateUniversalText" id="updateUniversalText"
-                value={{found.denominacion_catalogo}} [value]="found.denominacion_catalogo"
-                formControlName="updateUniversalText"></label>
-
-
-            <span class="spn_lbl">Tipo de Catalogo</span>
-            <label for="updateUniversalTipo">
-              <select class="dropdown" formControlName="updateUniversalTipo">
-                <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
-                  {{catalogo.denominacion_catalogo}}
-                </option>
-              </select>
-
-            </label>
 
 
 
-          </li>
+        </li>
 
 
-          <button type="submit">Actualizar Registro</button>
+        <button type="submit">Actualizar Registro</button>
 
 
 
-        </form>
-      </div>
-
+      </form>
     </div>
+
+  </div>
   </div>
 
 
