@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
-import { FormGroup, FormBuilder, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { forkJoin } from 'rxjs';
+
 import { SercatalogounivService } from '../sercatalogouniv.service';
+
+
 
 @Component({
   selector: 'app-catalogo-universal',
@@ -11,9 +15,8 @@ import { SercatalogounivService } from '../sercatalogouniv.service';
   styleUrls: ['./catalogo-universal.component.css']
 })
 
-export class CatalogoUniversalComponent implements OnInit 
-{
- 
+export class CatalogoUniversalComponent implements OnInit {
+
 
   //------------------------------------------------------
 
@@ -24,47 +27,51 @@ export class CatalogoUniversalComponent implements OnInit
       Router: Router
     ) { }
 
-//------------------------------------------------------------
+  //------------------------------------------------------------
   //LAS VARIABLES 
   title = "MANEJO DE CATALOGO UNIVERSAL";    //Titulo dela página
   tituloCataUniLista = "";             //Titulo Lista de todos los catalogos
   titloCataUniBuscado = "";                //Titulo de Color Buscado
   titloCataUniEditar = "";          //Titulo de Color a Editar
-  
-  CataUniT: any = [];               //Lista de todos los catalogos
+
+  Universal: any = [];               //Lista de todos los catalogos
+  UniversalTypes: any[] = [];        //Lista de todas las categorías
+
   CataUniCatalogo: any = [];        //Lista catalogo Catalogo
   CataUniColor: any = [];           //Lista catalogo Color
-  CataUniTipVehi: any = [];         //Lista catalogo TiposVehiculos
-  CataUniMarca: any = [];           //Lista catalogo Marca
-  CataUniTipDoc: any = [];          //Lista catalogo Tipos de Documntos
-  CataUniEps: any = [];             //Lista catalogo Eps
-  CataUniPrefSexual: any = [];      //Lista catalogo Preferencias Sexuales
+  UniversalipVehi: any = [];         //Lista catalogo TiposVehiculos
 
   CataUniCatalogoSel: any = [];        //Lista catalogo Catalogo selecionado
   CataUniColorSel: any = [];           //Lista el color selecionado
-  CataUniTipVehiSel: any = [];         //Lista catalogo TiposVehiculos selecionado
-  CataUniMarcaSel: any = [];           //Lista catalogo Marca selecionado
-  CataUniTipDocSel: any = [];          //Lista catalogo Tipos de Documntos selecionado
-  CataUniEpsSel: any = [];             //Lista catalogo Eps selecionado
-  CataUniPrefSexualSel: any = [];      //Lista catalogo Preferencias Sexuales selecionado
-  CataUniCataEdi: any =[];             // Registro del catalogo a editar
-  
-  tablacatalogosstotales:any = [];          //Encabezados tabla catalogos totales
+  UniversalipVehiSel: any = [];         //Lista catalogo TiposVehiculos selecionado
+  CataUniCataEdi: any = [];             // Registro del catalogo a editar
+
+  tablacatalogosstotales: any = [];          //Encabezados tabla catalogos totales
 
   BuscarEvalor = 1;               //Control para carga del valor a buscar
   controlLista = 1;               //Control para limpiar la lista
 
- //*****************************************************************************
- //Form group  //Grupo para la lista de Colores
-    ListarCatTotales =  new FormGroup 
+  asyncReady = false;            //Control para sincronizar el llamado a los servicios
+
+  //*****************************************************************************
+  // Definición de formgroups para cada formulario
+
+
+  // Crear uno iterado
+  universalTipos: any[] = [];
+
+  // Crear un objeto para guardar los formgroups
+  formGroups: { [key: string]: FormGroup } = {};
+
+  ListarCatTotales = new FormGroup
     (
       {
 
       }
     );
 
-    //Grupo para formulariomostrar catalogo de Catalogos
-    CBCatalogoCatalogo = new FormGroup 
+  //Grupo para formulariomostrar catalogo de Catalogos
+  CBCatalogoCatalogo = new FormGroup
     (
       {
         CatCatalogofiltro: new FormControl(),
@@ -72,8 +79,8 @@ export class CatalogoUniversalComponent implements OnInit
       }
     );
 
-    //Grupo para formulariomostrar catalogo colores
-    CBCatalogoColor = new FormGroup 
+  //Grupo para formulariomostrar catalogo colores
+  CBCatalogoColor = new FormGroup
     (
       {
         CatColorfiltro: new FormControl(),
@@ -81,8 +88,8 @@ export class CatalogoUniversalComponent implements OnInit
       }
     );
 
-    //Grupo para formulariomostrar catalogo Tipos de Vehículos
-    CBCatalogoTipVehi = new FormGroup 
+  //Grupo para formulariomostrar catalogo Tipos de Vehículos
+  CBCatalogoTipVehi = new FormGroup
     (
       {
         CatTipVehifiltro: new FormControl(),
@@ -90,44 +97,9 @@ export class CatalogoUniversalComponent implements OnInit
       }
     );
 
-    //Grupo para formulariomostrar catalogo Marca
-    CBCatalogoMarca = new FormGroup 
-    (
-      {
-        CatMarcafiltro: new FormControl(),
-        textMarca: new FormControl()
-      }
-    );
 
-    //Grupo para formulariomostrar catalogo Tipos de Documentos
-    CBCatalogoTipDoc = new FormGroup 
-    (
-      {
-        CatTipDocfiltro: new FormControl(),
-        textTivDoc: new FormControl()
-      }
-    );
-
-    //Grupo para formulariomostrar catalogo EPS
-    CBCatalogoEps = new FormGroup 
-    (
-      {
-        CatEpsfiltro: new FormControl(),
-        textEps: new FormControl()
-      }
-    );
-
-    //Grupo para formulariomostrar catalogo PrefSexual
-    CBCatalogoPrefSexual = new FormGroup 
-    (
-      {
-        CatPrefSexualfiltro: new FormControl(),
-        textPrefSexual: new FormControl()
-      }
-    );
-
-    //Grupo para crear Catalogos
-    CrearCatalogoU = new FormGroup 
+  //Grupo para crear Catalogos
+  insertUniversal = new FormGroup
     (
       {
         CBTipoCatalogo: new FormControl(),
@@ -136,8 +108,8 @@ export class CatalogoUniversalComponent implements OnInit
       }
     );
 
-    //Grupo para editar Catalogos
-    ActCatalogoU = new FormGroup 
+  //Grupo para editar Catalogos
+  ActCatalogoU = new FormGroup
     (
       {
         CBCatalogoEdi: new FormControl(),
@@ -147,86 +119,86 @@ export class CatalogoUniversalComponent implements OnInit
       }
     );
 
-//=============================================================
-//LOS CRUD
-//=============================================================
-//Lista de todos los catalogos
+  //=============================================================
+  //LOS CRUD
+  //=============================================================
+  //Lista de todos los catalogos
 
-  public consultaCatalogosTotales() 
-  {
-    if(this.controlLista == 1)
-    {
-        this.servi.getCatalogoTotal().subscribe((data: {catalogouiversal:[]}) => 
-        {
+  public consultaCatalogosTotales() {
+    if (this.controlLista == 1) {
+      this.servi.getUniversales().subscribe((data: { catalogouiversal: [] }) => {
 
-              this.CataUniT = data;  //JSON.parse(data);
-              this.tituloCataUniLista = "LISTA DE TODOS LOS CATALOGOS";
-              this.tablacatalogosstotales[0] = "Id";
-              this.tablacatalogosstotales[1] = "Denominación";
-              this.tablacatalogosstotales[2] = "Catalogo";
-              this.tablacatalogosstotales[3] = "LLaveForanea";
-        },
+        this.Universal = data;  //JSON.parse(data);
+        this.tituloCataUniLista = "LISTA DE TODOS LOS CATALOGOS";
+        this.tablacatalogosstotales[0] = "Id";
+        this.tablacatalogosstotales[1] = "Denominación";
+        this.tablacatalogosstotales[2] = "LLaveForanea";
+      },
         error => { console.error(error + " ") });
-      }
-      else
-      {
-        this.CataUniT = null;
-        this.tituloCataUniLista = "";
-        this.tablacatalogosstotales[0] = "";
-        this.tablacatalogosstotales[1] = "";
-        this.tablacatalogosstotales[2] = "";
-        this.tablacatalogosstotales[3] = "";  
-        this.controlLista = 1; 
-      }
-           
+    }
+    else {
+      this.Universal = null;
+      this.tituloCataUniLista = "";
+      this.tablacatalogosstotales[0] = "";
+      this.tablacatalogosstotales[1] = "";
+      this.tablacatalogosstotales[2] = "";
+      this.tablacatalogosstotales[3] = "";
+      this.controlLista = 1;
+    }
+
   }
 
-//--------------------------------------------------------------------------------------------->
-//para Limpiar la lista
+  //--------------------------------------------------------------------------------------------->
+  //para Limpiar la lista
 
-public LimpiarLista() 
-{
-  this.controlLista = 0;
-}
+  public LimpiarLista() {
+    this.controlLista = 0;
+  }
 
-// -----------------------------------------------------------------------------------------
-// Listar un solo tipo de Catalogo
-//--------------------------------------------------------------
-//Consulta un color por medio de su id.
 
-  public ListarCatalogoE(catip: any) 
-  {
+  // // Traer todos los tipos de catalogos
+  // public consultaUniversalTipo() {
+  //   this.servi.getUniversalTipo('/1').subscribe((data: []) => {
+  //     this.UniversalTypes = data;
+  //     console.log(this.UniversalTypes);
+  //   },
+  //     error => { console.log(error) });
+  // }
 
-    this.servi.getlListCatologoEsp('/' + catip).subscribe((data: {}) => 
-    {
-      if (catip == 1)
-      {
+
+
+  createFormGroups() {
+    this.universalTipos.forEach(catalogo => {
+      const formGroup = this.formBuilder.group({
+        id_catalogo: [catalogo.id_catalogo],
+        //list: [],
+        denominacion_catalogo: [catalogo.denominacion_catalogo],
+        llave_foranea_catalogo: [catalogo.llave_foranea_catalogo]
+      });
+
+      this.formGroups[catalogo.id_catalogo] = formGroup;
+
+    })
+  }
+
+
+  // -----------------------------------------------------------------------------------------
+  // Listar un solo tipo de Catalogo
+  //--------------------------------------------------------------
+  //Consulta un color por medio de su id.
+
+  public ListarCatalogoE(catip: any) {
+
+    this.servi.getUniversalTipo('/' + catip).subscribe((data: {}) => {
+      if (catip == 1) {
         this.CataUniCatalogo = data;
       }
-      else if(catip == 2)
-      {
+      else if (catip == 2) {
         this.CataUniColor = data;
-      }      
-      else if(catip == 3)
-      {
-        this.CataUniTipVehi = data;
-      }        
-      else if(catip == 4)
-      {
-        this.CataUniMarca = data;
       }
-      else if(catip == 5)
-      {
-        this.CataUniTipDoc = data;
-      }      
-      else if(catip == 6)
-      {
-        this.CataUniEps = data;
-      }  
-      else //if(catip == 7)
-      {
-        this.CataUniPrefSexual = data;
-      }  
+      else if (catip == 3) {
+        this.UniversalipVehi = data;
+      }
 
     },
       error => { console.log(error) });
@@ -234,229 +206,185 @@ public LimpiarLista()
   }
 
 
-//--------------------------------------------------------------
-//Consulta un color por medio de su id.
+  //--------------------------------------------------------------
+  //Consulta un color por medio de su id.
 
-public SelecCatalogoE(catip: any, catselec: any) 
-{
+  public SelecCatalogoE(catip: any, catselec: any) {
 
-  if ( this.BuscarEvalor != 0)
-  {
-    if (catip == 1)
-    {
-         this.BuscarEvalor = this.CBCatalogoCatalogo.getRawValue()['CatCatalogofiltro'];
+    if (this.BuscarEvalor != 0) {
+      if (catip == 1) {
+        this.BuscarEvalor = this.CBCatalogoCatalogo.getRawValue()['CatCatalogofiltro'];
+      }
+      else if (catip == 2) {
+        this.BuscarEvalor = this.CBCatalogoColor.getRawValue()['CatColorfiltro'];
+      }
+      else if (catip == 3) {
+        this.BuscarEvalor = this.CBCatalogoTipVehi.getRawValue()['CatTipVehifiltro'];
+      }
+
     }
-    else if (catip == 2)
-    {
-         this.BuscarEvalor = this.CBCatalogoColor.getRawValue()['CatColorfiltro'];
-    }
-    else if(catip == 3)
-    {
-      this.BuscarEvalor = this.CBCatalogoTipVehi.getRawValue()['CatTipVehifiltro'];
-    }  
-    else if(catip == 4)
-    {
-      this.BuscarEvalor = this.CBCatalogoMarca.getRawValue()['CatMarcafiltro'];
-    } 
-    else if(catip == 5)
-    {
-      this.BuscarEvalor = this.CBCatalogoTipDoc.getRawValue()['CatTipDocfiltro'];
-    }  
-    else if(catip == 6)
-    {
-      this.BuscarEvalor = this.CBCatalogoEps.getRawValue()['CatEpsfiltro'];
-    }  
-    else //if(catip ==7)
-    {
-      this.BuscarEvalor = this.CBCatalogoPrefSexual.getRawValue()['CatPrefSexualfiltro'];
-    }   
-
-  }
-  catselec = this.BuscarEvalor;
+    catselec = this.BuscarEvalor;
 
 
-  this.servi.getlListCatologoEsp('/' + catip + '/' + catselec).subscribe((data: {}) => 
-  {
-    console.log(" aca 12  catip - " +catip + "  Catselec  - " + catselec);
-      if (catip == 1)
-      {
+    this.servi.getUniversalTipo('/' + catip + '/' + catselec).subscribe((data: {}) => {
+      console.log(" aca 12  catip - " + catip + "  Catselec  - " + catselec);
+      if (catip == 1) {
         this.CataUniCatalogoSel = data;
       }
-      else if(catip == 2)
-      {
+      else if (catip == 2) {
         this.CataUniColorSel = data;
-      }      
-      else if(catip == 3)
-      {
-        this.CataUniTipVehiSel = data;
-      }        
-      else if(catip == 4)
-      {
-        this.CataUniMarcaSel = data;
       }
-      else if(catip ==5)
-      {
-        this.CataUniTipDocSel = data;
-      }      
-      else if(catip == 6)
-      {
-        this.CataUniEpsSel = data;
-      }  
-      else //if(catip == 7)
-      {
-        this.CataUniPrefSexualSel = data;
-      }  
-     
+      else if (catip == 3) {
+        this.UniversalipVehiSel = data;
+      }
 
-  },
-    error => { console.log(error) });
+    },
+      error => { console.log(error) });
 
-}
+  }
 
-//--------------------------------------------------------------
-//Consulta un catalogo por Id.
+  //--------------------------------------------------------------
+  //Consulta un catalogo por Id.
 
-public SelCataEditar() 
-{
-  this.BuscarEvalor  = this.ActCatalogoU.getRawValue()['CBCatalogoEdi'];
+  public SelCataEditar() {
+    this.BuscarEvalor = this.ActCatalogoU.getRawValue()['CBCatalogoEdi'];
 
-  this.servi.getlCatEdit(this.BuscarEvalor ).subscribe((data: any) => 
-  {
+    this.servi.getUniversal(this.BuscarEvalor).subscribe((data: any) => {
 
-    this.CataUniCataEdi = data;
-    //console.log(" aca 45 " + this.CataUniCataEdi.length + " y la data  " + data.length);
-    this.titloCataUniEditar = "CATALOGO A EDITAR";
+      this.CataUniCataEdi = data;
+      //console.log(" aca 45 " + this.CataUniCataEdi.length + " y la data  " + data.length);
+      this.titloCataUniEditar = "CATALOGO A EDITAR";
 
-  },
-    error => { console.log(error) });
+    },
+      error => { console.log(error) });
 
 
-}
-//-------------------------------------------------------------------------
+  }
+  //-------------------------------------------------------------------------
   //Para insertar una nuevo catalogo
 
-  InsertarNuevoCatalogo()   
-  {
+  InsertarNuevoCatalogo() {
     //variables para armar el JSON que se va a enviar al Back-End
-    var datosvalo1 =  this.CrearCatalogoU.getRawValue()['textNueDenominacion']; 
-    var datosvalo2 =  this.CrearCatalogoU.getRawValue()['textNueTipoCat'];
-    var datosvalo3 =  this.CrearCatalogoU.getRawValue()['CBTipoCatalogo'];
+    var datosvalo1 = this.insertUniversal.getRawValue()['textNueDenominacion'];
+    var datosvalo2 = this.insertUniversal.getRawValue()['textNueTipoCat'];
+    var datosvalo3 = this.insertUniversal.getRawValue()['CBTipoCatalogo'];
 
     //JSON armado
-    var cadena = {"denominacion_universal":datosvalo1,
-                  "catalogo_universal":datosvalo2,
-                  "llaveforanea":datosvalo3,
-                 };
+    var cadena = {
+      "denominacion_catalogo": datosvalo1,
+      "catalogo_universal": datosvalo2,
+      "llave_foranea_catalogo": datosvalo3,
+    };
 
     //se consume el servicio
-    this.servi.CrearCatalogoU(cadena).then(res =>
-    {
+    this.servi.insertUniversal(cadena).then(res => {
       console.log(res)
-    }).catch(err =>{
+    }).catch(err => {
       console.log(err)
     })
     //this.LimpiarFormulario();
-    this.CrearCatalogoU.reset();
+    this.insertUniversal.reset();
   }
 
-// -----------------------------------------------------------------------------------------
-// método para actualizar un catalogo .
+  // -----------------------------------------------------------------------------------------
+  // método para actualizar un catalogo .
 
-public ActualizarCatalogo() 
-{
+  public ActualizarCatalogo() {
 
     //variables para armar el JSON que se va a enviar al Back-End
-    var datosvalo1 =  this.ActCatalogoU.getRawValue()['CBCatalogoEdi'];
-    var datosvalo2 =  this.ActCatalogoU.getRawValue()['textNueDenominacionEdi']; 
-    var datosvalo3 =  this.ActCatalogoU.getRawValue()['textNueTipoCatEdi'];
-    var datosvalo4 =  this.ActCatalogoU.getRawValue()['CBTipoCatalogoEdi'];
+    var datosvalo1 = this.ActCatalogoU.getRawValue()['CBCatalogoEdi'];
+    var datosvalo2 = this.ActCatalogoU.getRawValue()['textNueDenominacionEdi'];
+    var datosvalo3 = this.ActCatalogoU.getRawValue()['textNueTipoCatEdi'];
+    var datosvalo4 = this.ActCatalogoU.getRawValue()['CBTipoCatalogoEdi'];
 
     //JSON armado
-    var cadena = {"id_universal":datosvalo1,
-                  "denominacion_universal":datosvalo2,
-                  "catalogo_universal":datosvalo3,
-                  "llaveforanea":datosvalo4
-                 };
+    var cadena = {
+      "id_catalogo": datosvalo1,
+      "denominacion_catalogo": datosvalo2,
+      "catalogo_universal": datosvalo3,
+      "llave_foranea_catalogo": datosvalo4
+    };
 
     //se consume el servicio
-    this.servi.ActualizarCatalogoU(cadena).then(res =>
-    {
+    this.servi.updateUniversal(cadena).then(res => {
       console.log(res)
-    }).catch(err =>{
+    }).catch(err => {
       console.log(err)
     })
 
-    this.CrearCatalogoU.reset();
-}
+    this.insertUniversal.reset();
+  }
 
   //=============================================================
   //LAS FUNCIONES PARA LLAMARLAS DESDE EL HTML
   //=============================================================  
 
-  ngOnInit(): void 
-  {
-    
-    this.ListarCatTotales= this.formBuilder.group(
-    {
+  ngOnInit(): void {
 
-    });
-    
+    forkJoin([
+      this.servi.getUniversales(),
+      this.servi.getUniversalTipo('/' + 1),
+    ]).subscribe(([result1, result2]) => {
+      // Aquí puedes realizar acciones con los resultados de los observables
+      this.Universal = result1;
+      this.universalTipos = result2;
+      
+
+      // Realiza otras acciones aquí después de que todos los observables se completen
+    },
+      error => { console.log(error) },
+      () => {
+        this.createFormGroups();
+        console.log(this.formGroups)
+        this.asyncReady = true;
+      }
+    );
+
+
+    // Llamar a la función que lista todos los catalogos
+    // this.consultaUniversalTipo(1).subscribe((data: any[]) => {
+    //   this.universalTipos = data;
+    //   this.createFormGroups();
+    // });
+
+
+    this.ListarCatTotales = this.formBuilder.group(
+      {
+
+      });
+
     this.CBCatalogoCatalogo = this.formBuilder.group(
-    {
-      CatCatalogofiltro: [],
-      textCatalogo: []
-    });
+      {
+        CatCatalogofiltro: [],
+        textCatalogo: []
+      });
 
     this.CBCatalogoColor = this.formBuilder.group(
-    {
-      CatColorfiltro: [],
-      textColor: []
-    });
+      {
+        CatColorfiltro: [],
+        textColor: []
+      });
 
     this.CBCatalogoTipVehi = this.formBuilder.group(
-    {
-      CatTipVehifiltro: [],
-      textTivVehi: []
-    });
+      {
+        CatTipVehifiltro: [],
+        textTivVehi: []
+      });
 
-    this.CBCatalogoMarca = this.formBuilder.group(
-    {
-      CatMarcafiltro: [],
-      textMarca: []
-    });
-
-    this.CBCatalogoTipDoc = this.formBuilder.group(
-    {
-      CatTipDocfiltro: [],
-      textTivDoc: []
-    });
-
-    this.CBCatalogoEps = this.formBuilder.group(
-    {
-      CatEpsfiltro: [],
-      textEps: []
-    });
-
-    this.CBCatalogoPrefSexual = this.formBuilder.group(
-    {
-      CatPrefSexualfiltro: [],
-      textPrefSexual: []
-    });
-
-    this.CrearCatalogoU = this.formBuilder.group(
-    {
-      CBTipoCatalogo: [],
-      textNueDenominacion: [],
-      textNueTipoCat: []
-    });
+    this.insertUniversal = this.formBuilder.group(
+      {
+        CBTipoCatalogo: [],
+        textNueDenominacion: [],
+        textNueTipoCat: []
+      });
 
     this.ActCatalogoU = this.formBuilder.group(
-    {
-      CBCatalogoEdi:  [],
-      CBTipoCatalogoEdi:  [],
-      textNueDenominacionEdi:  [],
-      textNueTipoCatEdi:  []
-    });
+      {
+        CBCatalogoEdi: [],
+        CBTipoCatalogoEdi: [],
+        textNueDenominacionEdi: [],
+        textNueTipoCatEdi: []
+      });
 
   }
 }
