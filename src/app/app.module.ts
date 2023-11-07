@@ -22,10 +22,10 @@ const appRoutes: Routes =
   {
     path: '',
     pathMatch: 'prefix',
-    redirectTo: 'Inicio'
+    redirectTo: 'universal'
   },
   {
-    path: 'Inicio',
+    path: 'universal',
     component:CatalogoUniversalComponent,
   },
   // {
