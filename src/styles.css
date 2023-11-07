@@ -1,0 +1,239 @@
+/* You can add global styles to this file, and also import other style files */
+
+div.dir
+{
+    position: relative;
+    width: 250px;
+    left: 530px;
+    border: 3px  solid rgb(59, 61, 134); 
+    background-color:rgb(238, 243, 191);
+    text-align: center;
+    FONT-FAMILY:Arial,Helvetica,sans-serif;
+    FONT-SIZE:16px;
+    line-height: 5px
+}
+
+a
+{
+  color:  rgb(59, 61, 134);
+
+}
+
+div.listaU
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(139, 46, 18); 
+    width: 580px;
+    background-color:rgb(248, 238, 149);
+    text-align: center;
+
+}
+div.lista
+{
+    position: relative;
+    left: 360px;
+    border: 3px  solid rgb(20, 82, 4); 
+    width: 620px;
+    background-color:rgb(172, 248, 149);
+    text-align: center;
+
+}
+div.colo
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(248, 77, 205); 
+    width: 580px;
+    background-color:rgb(248, 239, 106);
+    text-align: center
+    
+}
+
+div.Tipveh
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(73, 110, 70); 
+    width: 580px;
+    background-color:rgb(159, 216, 154);
+    text-align: center
+}
+
+div.Marc
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(182, 91, 194); 
+    width: 580px;
+    background-color:rgb(198, 158, 224);
+    text-align: center
+}
+
+div.TipDocc
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(182, 91, 194); 
+    width: 580px;
+    background-color:rgb(144, 136, 218);
+    text-align: center
+}
+
+div.Epps
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(83, 86, 235); 
+    width: 580px;
+    background-color:rgb(153, 151, 245);
+    text-align: center
+}
+
+div.pref
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(192, 83, 235); 
+    width: 580px;
+    background-color:rgb(230, 80, 167);
+    text-align: center
+}
+
+div.crea
+{
+    position: relative;
+    left: 360px;
+    border: 3px  solid rgb(109, 75, 12); 
+    width: 620px;
+    background-color:rgb(230, 190, 80);
+    text-align: center;
+
+}
+
+div.creaU
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(109, 75, 12); 
+    width: 580px;
+    background-color:rgb(230, 178, 80);
+    text-align: center;
+
+}
+
+div.edit
+{
+    position: relative;
+    left: 360px;
+    border: 3px  solid rgb(83, 86, 235); 
+    width: 620px;
+    background-color:rgb(153, 151, 245);
+    text-align: center
+}
+
+div.editU
+{
+    position: relative;
+    left: 400px;
+    border: 3px  solid rgb(83, 86, 235); 
+    width: 580px;
+    background-color:rgb(153, 151, 245);
+    text-align: center
+}
+
+div.buscar
+{
+    position: relative;
+    left: 360px;
+    border: 3px  solid rgb(73, 110, 70); 
+    width: 620px;
+    background-color:rgb(250, 175, 77);
+    text-align: center
+}
+
+li  
+{   
+    list-style: none; 
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+ul
+{
+    list-style: none; 
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.titlista
+{
+    
+    width: -50px;
+    text-align: center;
+}
+
+
+table
+{
+    background-color:rgb(255, 237, 180);
+    width: 100%;
+    font-family: "calibri", Garamond, 'Comic Sans';
+    font-weight: lighter;
+    font-size: 15px;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+th, td 
+{
+    border: solid 1px black;
+    padding: 0;
+}
+
+thead
+{
+    background-color: rgb(187, 149, 68);
+}
+
+tr:nth-child(even)
+{
+    background-color: rgb(250, 222, 128);
+}
+
+
+table.tabBuscar
+{
+    width: 100%;
+    border: none;
+    border-collapse: collapse; 
+    background-color:rgb(255, 237, 180);  
+    text-align: center;
+
+}
+
+thead.Colb
+{
+    background-color: rgb(240, 202, 98);
+    border: solid 1px black;
+
+    font-family: "calibri", Garamond, 'Comic Sans';
+    font-weight: bold;    
+    font-size: 18px
+}
+
+tbody.Filb
+{
+    background-color: rgb(224, 218, 121);
+    border: solid 1px black;
+
+    font-family: "calibri", Garamond, 'Comic Sans';
+    font-weight: lighter;
+    font-size: 14px;
+}
+
+th.b, tr.b 
+{
+    border: solid 1px black;
+}
