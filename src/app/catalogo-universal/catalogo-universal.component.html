@@ -1,99 +1,265 @@
-<body>
-
-  <div style="text-align:center">
-    <h1>{{ title }}</h1>
-  </div>
-
-  <br><br>
-
-  <div class="dir">
-
-    <h3><a routerLink="/Personas">PERSONAS</a></h3>
-
-  </div>
-  <br><br>
+<body class="d-flex">
 
 
-  <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
-  <ng-container *ngIf="asyncReady else loading">
-    <!--------------------------------------------------------------------------------------------->
-    <!-- para mostrar los Catalogos Totales -->
+  <!--Menu-->
+  <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" style="width: 280px;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+      <svg class="bi pe-none me-2" width="40" height="32">
+        <use xlink:href="#bootstrap"></use>
+      </svg>
+      <span class="fs-4">Sidebar</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="#" class="nav-link active" aria-current="page">
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#home"></use>
+          </svg>
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#speedometer2"></use>
+          </svg>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#table"></use>
+          </svg>
+          Orders
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#grid"></use>
+          </svg>
+          Products
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16">
+            <use xlink:href="#people-circle"></use>
+          </svg>
+          Customers
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <strong>mdo</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow">
+        <li><a class="dropdown-item" href="#">New project...</a></li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div>
+  </div><!--End Menu-->
 
-    <div class="listaU">
+  <div class="w-100 d-flex flex-column">
+    <div class="content container p-5">
+      <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
+      <ng-container *ngIf="asyncReady else loading">
+        <!--------------------------------------------------------------------------------------------->
+        <!-- para mostrar los Catalogos Totales -->
 
-      <h2>Todos los Catalogos</h2>
+        <div class="listaU">
+
+          <h2>Todos los Catalogos</h2>
 
 
-      <form (ngSubmit)="consultaCatalogosTotales()" [formGroup]="ListarCatTotales">
+          <form (ngSubmit)="consultaCatalogosTotales()" [formGroup]="ListarCatTotales">
 
-        <button type="submit" style="margin-right: 30px">Listar todos los Catalogos</button>
-        <button (click)="LimpiarLista()" style="scroll-margin-left: 30px">Linpiar todos los Catalogos</button>
+            <button type="submit" style="margin-right: 30px">Listar todos los Catalogos</button>
+            <button (click)="LimpiarLista()" style="scroll-margin-left: 30px">Linpiar todos los Catalogos</button>
 
+            <br><br>
+
+            <h2>{{tituloCataUniLista}}</h2>
+            <table class="table table-dark table-striped">
+              <!-- <thead>
+              <tr>
+                <th scope="col">{{tablacatalogosstotales[0]}}</th>
+                <th scope="col">{{tablacatalogosstotales[1]}}</th>
+                <th scope="col">{{tablacatalogosstotales[2]}}</th>
+              </tr>
+            </thead> -->
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Deno</th>
+                  <th scope="col">Llave</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let catu of Universal">
+                  <th scope="row"> {{ catu.id_catalogo }} </th>
+                  <td>{{ catu.denominacion_catalogo }} </td>
+                  <td>{{ catu.llave_foranea_catalogo}} </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </form>
+
+        </div>
         <br><br>
+        <div *ngFor="let catalogo of universalTipos">
+          <form [formGroup]="formGroups[catalogo.id_catalogo]">
+            <h3>{{ catalogo.denominacion_catalogo }}</h3>
 
-        <h2>{{tituloCataUniLista}}</h2>
-        <table>
-          <thead>
-            <th>{{tablacatalogosstotales[0]}}</th>
-            <th>{{tablacatalogosstotales[1]}}</th>
-            <th>{{tablacatalogosstotales[2]}}</th>
-          </thead>
+            <!-- <label for="id_catalogo">ID:</label>
+        <input type="text" id="id_catalogo" formControlName="id_catalogo" readonly>
+  
+        <label for="denominacion_catalogo">Denominación:</label>
+        <input type="text" id="denominacion_catalogo" formControlName="denominacion_catalogo">
+  
+        <label for="llave_foranea_catalogo">Llave Foránea:</label>
+        <input type="text" id="llave_foranea_catalogo" formControlName="llave_foranea_catalogo"> -->
 
-          <tbody>
-            <tr *ngFor="let catu of Universal">
+            <!-- <select class="dropdown" style="width: 150px" formControlName="CatColorfiltro" (click)="ListarCatalogoE(2)">
+            <option value="value1">Colores</option>
+            <option *ngFor="let item of catalogo.list" [value]="item">
+              {{item.denominacion_catalogo}}
+            </option>
+          </select> -->
 
-              <th> {{ catu.id_catalogo }} </th>
-              <th>{{ catu.denominacion_catalogo }} </th>
-              <th>{{ catu.llave_foranea_catalogo}} </th>
+            <select class="dropdown" style="width: 150px" formControlName="denominacion_catalogo">
+              <!-- <option value="value1">Colores</option> -->
 
-            </tr>
-          </tbody>
-        </table>
+              <option *ngFor="let item of formGroups[catalogo?.id_catalogo]?.get('lista')?.value"
+                [value]="item.id_catalogo">
+                {{item.denominacion_catalogo}}
+              </option>
+            </select>
 
-      </form>
+            <button (click)="printId(catalogo.id_catalogo)">Mostrar Valor</button>
+            <p *ngIf="selected[catalogo.id_catalogo]">Valor seleccionado: {{ selected[catalogo.id_catalogo] }}</p>
+
+          </form>
+        </div>
+
+      </ng-container>
+
+      <ng-template #loading>
+        loading...
+      </ng-template>
+
+      <!--------------------------------------------------------------------------------------------->
+      <!-- para crear un nuevo Catalogo Universal -->
+
+      <div class="creaU">
+
+        <h2>Registrar un Nuevo Catalogo Universal</h2>
+
+        <form (ngSubmit)="insertUniversal()" [formGroup]="insertUniversalGroup">
+
+          <!-- Los otros controles para la captura de los datos del Catalogo -->
+          <span class="spn_lbl">Denominación</span>
+          <label for="createUniversalText">
+            <input type="text" name="createUniversalText" id="createUniversalText"
+              formControlName="createUniversalText">
+          </label>
+          <br><br>
+
+          <span class="spn_lbl">Tipo de Catalogo</span>
+          <label for="createUniversalTipo">
+            <select class="dropdown" formControlName="createUniversalTipo" (click)="ListarCatalogoE(1)">
+              <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
+                {{catalogo.denominacion_catalogo}}
+              </option>
+            </select>
+          </label>
+          <br> <br>
+
+          <button type="submit">Nuevo Catalogo Universal</button>
+          <br><br>
+        </form>
+      </div>
+      <br><br>
+
+
+      <!--------------------------------------------------------------------------------------------->
+      <!-- para Actualizar un Catalogo Universal -->
+
+      <div class="editU">
+
+        <h2>Modificar un Catalogo Universal</h2>
+
+        <form (ngSubmit)="updateUniversal()" [formGroup]="updateUniversalGroup">
+
+          <span class="spn_lbl">Catalogo a Editar</span>
+          <label>
+            <select class="dropdown2" formControlName="updateUniversalId" (change)="getById()">
+              <option *ngFor="let caese of Universal" [value]="caese.id_catalogo">
+                {{caese.denominacion_catalogo}} - {{caese.llave_foranea_catalogo}}
+              </option>
+            </select>
+          </label>
+          <br> <br>
+
+          <h2>{{titloCataUniEditar}}</h2>
+
+          <li *ngFor="let found of universalFound">
+
+            <br> <br>
+
+            <!-- Los otros controles para la captura de los datos deL cATALOGO -->
+
+            <span class="spn_lbl">Denominacion</span>
+            <label for="updateUniversalText">
+              <input type="text" name="updateUniversalText" id="updateUniversalText"
+                value={{found.denominacion_catalogo}} [value]="found.denominacion_catalogo"
+                formControlName="updateUniversalText"></label>
+            <br><br>
+
+            <span class="spn_lbl">Tipo de Catalogo</span>
+            <label for="updateUniversalTipo">
+              <select class="dropdown" formControlName="updateUniversalTipo">
+                <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
+                  {{catalogo.denominacion_catalogo}}
+                </option>
+              </select>
+
+            </label>
+            <br><br>
+
+
+          </li>
+          <br><br>
+
+          <button type="submit">Actualizar Registro</button>
+
+          <br><br>
+
+        </form>
+      </div>
 
     </div>
-    <br><br>
-    <div *ngFor="let catalogo of universalTipos">
-      <form [formGroup]="formGroups[catalogo.id_catalogo]">
-        <h3>{{ catalogo.denominacion_catalogo }}</h3>
+  </div>
 
-        <!-- <label for="id_catalogo">ID:</label>
-      <input type="text" id="id_catalogo" formControlName="id_catalogo" readonly>
 
-      <label for="denominacion_catalogo">Denominación:</label>
-      <input type="text" id="denominacion_catalogo" formControlName="denominacion_catalogo">
 
-      <label for="llave_foranea_catalogo">Llave Foránea:</label>
-      <input type="text" id="llave_foranea_catalogo" formControlName="llave_foranea_catalogo"> -->
 
-        <!-- <select class="dropdown" style="width: 150px" formControlName="CatColorfiltro" (click)="ListarCatalogoE(2)">
-          <option value="value1">Colores</option>
-          <option *ngFor="let item of catalogo.list" [value]="item">
-            {{item.denominacion_catalogo}}
-          </option>
-        </select> -->
 
-        <select class="dropdown" style="width: 150px" formControlName="denominacion_catalogo">
-          <!-- <option value="value1">Colores</option> -->
 
-          <option *ngFor="let item of formGroups[catalogo?.id_catalogo]?.get('lista')?.value"
-            [value]="item.id_catalogo">
-            {{item.denominacion_catalogo}}
-          </option>
-        </select>
 
-        <button (click)="printId(catalogo.id_catalogo)">Mostrar Valor</button>
-        <p *ngIf="selected[catalogo.id_catalogo]">Valor seleccionado: {{ selected[catalogo.id_catalogo] }}</p>
-
-      </form>
-    </div>
-
-  </ng-container>
-
-  <ng-template #loading>
-    loading...
-  </ng-template>
 
   <!--------------------------------------------------------------------------------------------->
   <!-- para mostrar un solo Catalogo Colores -->
@@ -156,100 +322,3 @@
 
   </div>
   <br><br> -->
-  <!--------------------------------------------------------------------------------------------->
-  <!-- para crear un nuevo Catalogo Universal -->
-
-  <div class="creaU">
-
-    <h2>Registrar un Nuevo Catalogo Universal</h2>
-
-    <form (ngSubmit)="insertUniversal()" [formGroup]="insertUniversalGroup">
-
-      <!-- Los otros controles para la captura de los datos del Catalogo -->
-      <span class="spn_lbl">Denominación</span>
-      <label for="createUniversalText">
-        <input type="text" name="createUniversalText" id="createUniversalText" formControlName="createUniversalText">
-      </label>
-      <br><br>
-
-      <span class="spn_lbl">Tipo de Catalogo</span>
-      <label for="createUniversalTipo">
-        <select class="dropdown" formControlName="createUniversalTipo" (click)="ListarCatalogoE(1)">
-          <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
-            {{catalogo.denominacion_catalogo}}
-          </option>
-        </select>
-      </label>
-      <br> <br>
-
-      <button type="submit">Nuevo Catalogo Universal</button>
-      <br><br>
-    </form>
-  </div>
-  <br><br>
-
-
-  <!--------------------------------------------------------------------------------------------->
-  <!-- para Actualizar un Catalogo Universal -->
-
-  <div class="editU">
-
-    <h2>Modificar un Catalogo Universal</h2>
-
-    <form (ngSubmit)="updateUniversal()" [formGroup]="updateUniversalGroup">
-
-      <span class="spn_lbl">Catalogo a Editar</span>
-      <label>
-        <select class="dropdown2" formControlName="updateUniversalId" (change)="getById()">
-          <option *ngFor="let caese of Universal" [value]="caese.id_catalogo">
-            {{caese.denominacion_catalogo}} - {{caese.llave_foranea_catalogo}}
-          </option>
-        </select>
-      </label>
-      <br> <br>
-
-      <h2>{{titloCataUniEditar}}</h2>
-
-      <li *ngFor="let found of universalFound">
-
-        <br> <br>
-
-        <!-- Los otros controles para la captura de los datos deL cATALOGO -->
-
-        <span class="spn_lbl">Denominacion</span>
-        <label for="updateUniversalText">
-          <input type="text" name="updateUniversalText" id="updateUniversalText" value={{found.denominacion_catalogo}}
-            [value]="found.denominacion_catalogo" formControlName="updateUniversalText"></label>
-        <br><br>
-
-        <span class="spn_lbl">Tipo de Catalogo</span>
-        <label for="updateUniversalTipo">
-          <select class="dropdown" formControlName="updateUniversalTipo">
-            <option *ngFor="let catalogo of universalTipos" [value]="catalogo.id_catalogo">
-              {{catalogo.denominacion_catalogo}}
-            </option>
-          </select>
-
-        </label>
-        <br><br>
-
-
-      </li>
-      <br><br>
-
-      <button type="submit">Actualizar Registro</button>
-
-      <br><br>
-
-    </form>
-  </div>
-
-
-
-  <!--------------------------------------------------------------------------------------------->
-
-  <div class="dir">
-
-    <h3><a routerLink="/Personas">PERSONAS</a></h3>
-
-  </div>
