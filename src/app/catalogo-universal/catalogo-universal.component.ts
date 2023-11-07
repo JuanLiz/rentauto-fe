@@ -45,7 +45,7 @@ export class CatalogoUniversalComponent implements OnInit {
   CataUniCatalogoSel: any = [];        //Lista catalogo Catalogo selecionado
   CataUniColorSel: any = [];           //Lista el color selecionado
   UniversalipVehiSel: any = [];         //Lista catalogo TiposVehiculos selecionado
-  CataUniCataEdi: any = [];             // Registro del catalogo a editar
+  universalFound: any = [];             // Registro del catalogo a editar
 
   tablacatalogosstotales: any = [];          //Encabezados tabla catalogos totales
 
@@ -100,9 +100,29 @@ export class CatalogoUniversalComponent implements OnInit {
       }
     );
 
-  //=============================================================
-  //LOS CRUD
-  //=============================================================
+
+  public loadData() {
+    this.asyncReady = false;
+    forkJoin([
+      this.servi.getUniversales(),
+      this.servi.getUniversalTipo('/' + 1),
+    ]).subscribe(([result1, result2]) => {
+      // Aquí puedes realizar acciones con los resultados de los observables
+      this.Universal = result1;
+      this.universalTipos = result2;
+
+
+      // Realiza otras acciones aquí después de que todos los observables se completen
+    },
+      error => { console.log(error) },
+      () => {
+        this.createFormGroups();
+        this.asyncReady = true;
+      }
+    );
+  }
+
+
   //Lista de todos los catalogos
 
   public consultaCatalogosTotales() {
@@ -183,10 +203,20 @@ export class CatalogoUniversalComponent implements OnInit {
 
   public getById() {
     let idSearch = this.updateUniversalGroup.getRawValue()['updateUniversalId'];
-    
+
     // Buscar en el array con filter
-    this.CataUniCataEdi = this.Universal.filter((item: any) => item.id_catalogo == idSearch);
-  
+    this.universalFound = [this.Universal.find((item: any) => item.id_catalogo == idSearch)];
+
+    // Buscar id de la llave foranea
+    let idLlaveForanea = this.Universal.find((item: any) => item.denominacion_catalogo == this.universalFound[0].llave_foranea_catalogo).id_catalogo;
+
+    console.log(this.universalFound)
+    let forupd = {
+      updateUniversalText: this.universalFound[0].denominacion_catalogo,
+      updateUniversalTipo: idLlaveForanea
+    }
+    this.updateUniversalGroup.patchValue(forupd);
+    console.log(this.updateUniversalGroup)
   }
 
 
@@ -198,8 +228,8 @@ export class CatalogoUniversalComponent implements OnInit {
 
   //   this.servi.getUniversal(this.BuscarEvalor).subscribe((data: any) => {
 
-  //     this.CataUniCataEdi = data;
-  //     //console.log(" aca 45 " + this.CataUniCataEdi.length + " y la data  " + data.length);
+  //     this.universalFound = data;
+  //     //console.log(" aca 45 " + this.universalFound.length + " y la data  " + data.length);
   //     this.titloCataUniEditar = "CATALOGO A EDITAR";
 
   //   },
@@ -226,6 +256,8 @@ export class CatalogoUniversalComponent implements OnInit {
     })
     //this.LimpiarFormulario();
     this.insertUniversalGroup.reset();
+    // Cargr datos de nuevo
+    this.loadData()
   }
 
   // -----------------------------------------------------------------------------------------
@@ -247,7 +279,9 @@ export class CatalogoUniversalComponent implements OnInit {
       console.log(err)
     })
 
-    this.insertUniversalGroup.reset();
+    this.updateUniversalGroup.reset();
+    // Cargr datos de nuevo
+    this.loadData()
   }
 
   //=============================================================
@@ -256,24 +290,8 @@ export class CatalogoUniversalComponent implements OnInit {
 
   ngOnInit(): void {
 
-    forkJoin([
-      this.servi.getUniversales(),
-      this.servi.getUniversalTipo('/' + 1),
-    ]).subscribe(([result1, result2]) => {
-      // Aquí puedes realizar acciones con los resultados de los observables
-      this.Universal = result1;
-      this.universalTipos = result2;
-
-
-      // Realiza otras acciones aquí después de que todos los observables se completen
-    },
-      error => { console.log(error) },
-      () => {
-        this.createFormGroups();
-        console.log(this.formGroups)
-        this.asyncReady = true;
-      }
-    );
+    // Cargar datos del backend al abrir la página
+    this.loadData()
 
     this.ListarCatTotales = this.formBuilder.group(
       {
@@ -289,16 +307,14 @@ export class CatalogoUniversalComponent implements OnInit {
     this.insertUniversalGroup = this.formBuilder.group(
       {
         createUniversalTipo: [],
-        createUniversalText: [],
-        textNueTipoCat: []
+        createUniversalText: []
       });
 
     this.updateUniversalGroup = this.formBuilder.group(
       {
         updateUniversalId: [],
         updateUniversalTipo: [],
-        updateUniversalText: [],
-        textNueTipoCatEdi: []
+        updateUniversalText: []
       });
 
   }
