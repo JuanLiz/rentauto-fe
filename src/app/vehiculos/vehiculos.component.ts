@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
 import { SercatalogounivService } from '../sercatalogouniv.service';
+import { SucursalesService } from '../sucursales.service';
 import { VehiculosService } from '../vehiculos.service';
 
 
@@ -26,6 +27,7 @@ export class VehiculosComponent implements OnInit {
       private formBuilder: FormBuilder,
       private servi: VehiculosService,
       private universalServi: SercatalogounivService,
+      private SucursalesServi: SucursalesService,
       Router: Router
     ) { }
 
@@ -36,6 +38,7 @@ export class VehiculosComponent implements OnInit {
   vehiculos: any = [];
 
   // Lista de sucursales traídas de las Sucursales
+  vehiculoSucursales: any[] = [];
 
   // Tipos de vehiculos traídos del Universal
   vehiculoTipos: any[] = [];
@@ -64,15 +67,17 @@ export class VehiculosComponent implements OnInit {
     (
       {
         readVehiculoId: new FormControl(),
-        readVehiculoTipo: new FormControl(),
-        readVehiculoTipoMarca: new FormControl(),
+        readVehiculoPlaca: new FormControl(),
         readVehiculoMarca: new FormControl(),
-        readVehiculoNombre1: new FormControl(),
-        readVehiculoNombre2: new FormControl(),
-        readVehiculoApellido1: new FormControl(),
-        readVehiculoApellido2: new FormControl(),
-        readVehiculoFechaNac: new FormControl(),
-        readVehiculoColor: new FormControl()
+        readVehiculoModelo: new FormControl(),
+        readVehiculoColor: new FormControl(),
+        readVehiculoAnio: new FormControl(),
+        readVehiculoTipo: new FormControl(),
+        readVehiculoEstado: new FormControl(),
+        readVehiculoPasajeros: new FormControl(),
+        readVehiculoTransmision: new FormControl(),
+        readVehiculoPrecioDia: new FormControl(),
+        readVehiculoSucursal: new FormControl()
       }
     );
 
@@ -81,15 +86,19 @@ export class VehiculosComponent implements OnInit {
   insertVehiculoGroup = new FormGroup
     (
       {
-        insertVehiculoTipo: new FormControl(),
-        insertVehiculoTipoMarca: new FormControl(),
+        insertVehiculoId: new FormControl(),
+        insertVehiculoPlaca: new FormControl(),
         insertVehiculoMarca: new FormControl(),
-        insertVehiculoNombre1: new FormControl(),
-        insertVehiculoNombre2: new FormControl(),
-        insertVehiculoApellido1: new FormControl(),
-        insertVehiculoApellido2: new FormControl(),
-        insertVehiculoFechaNac: new FormControl(),
-        insertVehiculoColor: new FormControl()
+        insertVehiculoModelo: new FormControl(),
+        insertVehiculoColor: new FormControl(),
+        insertVehiculoAnio: new FormControl(),
+        insertVehiculoTipo: new FormControl(),
+        insertVehiculoEstado: new FormControl(),
+        insertVehiculoPasajeros: new FormControl(),
+        insertVehiculoTransmision: new FormControl(),
+        insertVehiculoPrecioDia: new FormControl(),
+        insertVehiculoSucursal: new FormControl()
+
       }
     );
 
@@ -98,15 +107,17 @@ export class VehiculosComponent implements OnInit {
     (
       {
         updateVehiculoId: new FormControl(),
-        updateVehiculoTipo: new FormControl(),
-        updateVehiculoTipoMarca: new FormControl(),
+        updateVehiculoPlaca: new FormControl(),
         updateVehiculoMarca: new FormControl(),
-        updateVehiculoNombre1: new FormControl(),
-        updateVehiculoNombre2: new FormControl(),
-        updateVehiculoApellido1: new FormControl(),
-        updateVehiculoApellido2: new FormControl(),
-        updateVehiculoFechaNac: new FormControl(),
-        updateVehiculoColor: new FormControl()
+        updateVehiculoModelo: new FormControl(),
+        updateVehiculoColor: new FormControl(),
+        updateVehiculoAnio: new FormControl(),
+        updateVehiculoTipo: new FormControl(),
+        updateVehiculoEstado: new FormControl(),
+        updateVehiculoPasajeros: new FormControl(),
+        updateVehiculoTransmision: new FormControl(),
+        updateVehiculoPrecioDia: new FormControl(),
+        updateVehiculoSucursal: new FormControl()
       }
     );
 
@@ -120,28 +131,36 @@ export class VehiculosComponent implements OnInit {
       // Traer todas las vehiculos
       this.servi.getVehiculos(),
       // Traer cosas del catálogo
+      // Marcas de vehiculo
+      this.universalServi.getUniversalTipo('/6'),
+      // Colores de vehiculo
+      this.universalServi.getUniversalTipo('/7'),
       // Tipos de vehiculo
-      this.universalServi.getUniversalTipo('/2'),
-      // Tipos de documento
-      this.universalServi.getUniversalTipo('/3'),
-      // Tipos de sexo
-      this.universalServi.getUniversalTipo('/4'),
+      this.universalServi.getUniversalTipo('/8'),
+      // Estados de vehiculo
+      this.universalServi.getUniversalTipo('/9'),
+      // Transmsiones de vehiculo
+      this.universalServi.getUniversalTipo('/10'),
+      // Sucursales
+      this.SucursalesServi.getSucursales()
 
-    ]).subscribe(([vehiculos, tiposVehiculo, tiposMarcaumento, tiposColor]) => {
+    ]).subscribe((
+      [
+        vehiculos,
+        marcasVehiculos,
+        coloresVehiculos,
+        tiposVehiculos,
+        estadosVehiculos,
+        transmisionesVehiculos,
+        sucursalesVehiculos
+      ]) => {
       this.vehiculos = vehiculos as any[];
-      // Reemplazar valores nulos de nombre2 y apellido2
-      this.vehiculos.forEach((item: any) => {
-        item.nombre2_vehiculo = item.nombre2_vehiculo ? item.nombre2_vehiculo : '';
-        item.apellido2_vehiculo = item.apellido2_vehiculo ? item.apellido2_vehiculo : '';
-      });
-      // Quitar hora "T05:00:00.000Z" de la fecha
-      this.vehiculos.forEach((item: any) => {
-        item.fecha_nacimiento_vehiculo = item.fecha_nacimiento_vehiculo.slice(0, 10);
-      });
-      this.vehiculoTipos = tiposVehiculo as any[];
-      this.vehiculoTiposMarca = tiposMarcaumento as any[];
-      this.vehiculoTiposColor = tiposColor as any[];
-
+      this.vehiculoTiposMarca = marcasVehiculos as any[];
+      this.vehiculoTiposColor = coloresVehiculos as any[];
+      this.vehiculoTipos = tiposVehiculos as any[];
+      this.vehiculoTiposEstado = estadosVehiculos as any[];
+      this.vehiculoTiposTransmision = transmisionesVehiculos as any[];
+      this.vehiculoSucursales = sucursalesVehiculos as any[];
     },
       error => { console.log(error) },
       () => {
@@ -151,39 +170,24 @@ export class VehiculosComponent implements OnInit {
   }
 
 
-  // Mostrar vehiculo seleccionada
+  // Mostrar vehiculo seleccionado
   getById() {
     this.servi.getVehiculo(this.readVehiculoGroup.getRawValue()['readVehiculoId']).subscribe((data: []) => {
       this.vehiculoSearched = data;
-      // Formatear fecha
-      var fecha = new Date(this.vehiculoSearched[0].fecha_nacimiento_vehiculo);
-      var dia = String(fecha.getDate());
-      // Con cero a la izquierda
-      if (parseInt(dia) < 10) {
-        dia = '0' + dia;
-      }
-
-      var mes = String(fecha.getMonth() + 1);
-
-      // Con cero a la izquierda
-      if (parseInt(mes) < 10) {
-        mes = '0' + mes;
-      }
-      var año = fecha.getFullYear();
-      this.vehiculoSearched[0].fecha_nacimiento_vehiculo = año + '-' + mes + '-' + dia;
-
       // Preparar datos para cargar en el formulario
       let forupd = {
         readVehiculoId: this.vehiculoSearched[0].id_vehiculo,
+        readVehiculoPlaca: this.vehiculoSearched[0].placa_vehiculo,
+        readVehiculoMarca: this.vehiculoSearched[0].marca_vehiculo,
+        readVehiculoModelo: this.vehiculoSearched[0].modelo_vehiculo,
+        readVehiculoColor: this.vehiculoSearched[0].color_vehiculo,
+        readVehiculoAnio: this.vehiculoSearched[0].anio_vehiculo,
         readVehiculoTipo: this.vehiculoSearched[0].tipo_vehiculo,
-        readVehiculoTipoMarca: this.vehiculoSearched[0].tipo_doc_vehiculo,
-        readVehiculoMarca: this.vehiculoSearched[0].doc_vehiculo,
-        readVehiculoNombre1: this.vehiculoSearched[0].nombre1_vehiculo,
-        readVehiculoNombre2: this.vehiculoSearched[0].nombre2_vehiculo ? this.vehiculoSearched[0].nombre2_vehiculo : '',
-        readVehiculoApellido1: this.vehiculoSearched[0].apellido1_vehiculo,
-        readVehiculoApellido2: this.vehiculoSearched[0].apellido2_vehiculo ? this.vehiculoSearched[0].apellido2_vehiculo : '',
-        readVehiculoFechaNac: this.vehiculoSearched[0].fecha_nacimiento_vehiculo,
-        readVehiculoColor: this.vehiculoSearched[0].sexo_vehiculo
+        readVehiculoEstado: this.vehiculoSearched[0].estado_vehiculo,
+        readVehiculoPasajeros: this.vehiculoSearched[0].pasajeros_vehiculo,
+        readVehiculoTransmision: this.vehiculoSearched[0].transmision_vehiculo,
+        readVehiculoPrecioDia: this.vehiculoSearched[0].precio_dia_vehiculo,
+        readVehiculoSucursal: this.vehiculoSearched[0].sucursal_vehiculo
       }
       this.readVehiculoGroup.patchValue(forupd);
       console.log(this.readVehiculoGroup)
@@ -199,36 +203,21 @@ export class VehiculosComponent implements OnInit {
     this.vehiculoFound = this.servi.getVehiculo(idSearch).subscribe((data: []) => {
       this.vehiculoFound = data;
 
-      // Formatear fecha
-      var fecha = new Date(this.vehiculoFound[0].fecha_nacimiento_vehiculo);
-      var dia = String(fecha.getDate());
-      // Con cero a la izquierda
-      if (parseInt(dia) < 10) {
-        dia = '0' + dia;
-      }
-
-      var mes = String(fecha.getMonth() + 1);
-
-      // Con cero a la izquierda
-      if (parseInt(mes) < 10) {
-        mes = '0' + mes;
-      }
-      var año = fecha.getFullYear();
-      this.vehiculoFound[0].fecha_nacimiento_vehiculo = año + '-' + mes + '-' + dia;
-
       // Preparar datos para cargar en el formulario
       let forupd = {
         updateVehiculoId: this.vehiculoFound[0].id_vehiculo,
+        updateVehiculoPlaca: this.vehiculoFound[0].placa_vehiculo,
+        updateVehiculoMarca: this.vehiculoTiposMarca.find((item: any) => item.denominacion_catalogo == this.vehiculoFound[0].marca_vehiculo).id_catalogo,
+        updateVehiculoModelo: this.vehiculoFound[0].modelo_vehiculo,
+        updateVehiculoColor: this.vehiculoTiposColor.find((item: any) => item.denominacion_catalogo == this.vehiculoFound[0].color_vehiculo).id_catalogo,
+        updateVehiculoAnio: this.vehiculoFound[0].anio_vehiculo,
         updateVehiculoTipo: this.vehiculoTipos.find((item: any) => item.denominacion_catalogo == this.vehiculoFound[0].tipo_vehiculo).id_catalogo,
-        updateVehiculoTipoMarca: this.vehiculoTiposMarca.find((item: any) => item.denominacion_catalogo == this.vehiculoFound[0].tipo_doc_vehiculo).id_catalogo,
-        updateVehiculoMarca: this.vehiculoFound[0].doc_vehiculo,
-        updateVehiculoNombre1: this.vehiculoFound[0].nombre1_vehiculo,
-        updateVehiculoNombre2: this.vehiculoFound[0].nombre2_vehiculo ? this.vehiculoFound[0].nombre2_vehiculo : '',
-        updateVehiculoApellido1: this.vehiculoFound[0].apellido1_vehiculo,
-        updateVehiculoApellido2: this.vehiculoFound[0].apellido2_vehiculo ? this.vehiculoFound[0].apellido2_vehiculo : '',
-        updateVehiculoFechaNac: this.vehiculoFound[0].fecha_nacimiento_vehiculo,
-        updateVehiculoColor: this.vehiculoTiposColor.find((item: any) => item.denominacion_catalogo == this.vehiculoFound[0].sexo_vehiculo).id_catalogo
-      }
+        updateVehiculoEstado: this.vehiculoTiposEstado.find((item: any) => item.denominacion_catalogo == this.vehiculoFound[0].estado_vehiculo).id_catalogo,
+        updateVehiculoPasajeros: this.vehiculoFound[0].pasajeros_vehiculo,
+        updateVehiculoTransmision: this.vehiculoTiposTransmision.find((item: any) => item.denominacion_catalogo == this.vehiculoFound[0].transmision_vehiculo).id_catalogo,
+        updateVehiculoPrecioDia: this.vehiculoFound[0].precio_dia_vehiculo,
+        updateVehiculoSucursal: this.vehiculoSucursales.find((item: any) => item.nombre_sucursal == this.vehiculoFound[0].sucursal_vehiculo).id_sucursal
+     }
       this.updateVehiculoGroup.patchValue(forupd);
       console.log(this.updateVehiculoGroup)
     });
@@ -237,22 +226,22 @@ export class VehiculosComponent implements OnInit {
 
   }
 
-  // Insertar un nuevo catálogo
+  // Insertar un nuevo vehículo
   public insertVehiculo() {
 
     //JSON armado
     var body = {
+      "placa_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoPlaca'],
+      "marca_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoMarca'],
+      "modelo_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoModelo'],
+      "color_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoColor'],
+      "anio_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoAnio'],
       "tipo_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoTipo'],
-      "tipo_doc_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoTipoMarca'],
-      "doc_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoMarca'],
-      "nombre1_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoNombre1'],
-      "nombre2_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoNombre2']
-        ? this.insertVehiculoGroup.getRawValue()['insertVehiculoNombre2'] : null,
-      "apellido1_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoApellido1'],
-      "apellido2_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoApellido2']
-        ? this.insertVehiculoGroup.getRawValue()['insertVehiculoApellido2'] : null,
-      "fecha_nacimiento_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoFechaNac'],
-      "sexo_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoColor']
+      "estado_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoEstado'],
+      "pasajeros_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoPasajeros'],
+      "transmision_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoTransmision'],
+      "precio_dia_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoPrecioDia'],
+      "sucursal_vehiculo": this.insertVehiculoGroup.getRawValue()['insertVehiculoSucursal']
     };
 
     //se consume el servicio
@@ -268,23 +257,23 @@ export class VehiculosComponent implements OnInit {
   }
 
 
-  // Actualizar un catálogo
+  // Actualizar un vehículo
   public updateVehiculo() {
 
     //JSON armado
     var cadena = {
       "id_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoId'],
+      "placa_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoPlaca'],
+      "marca_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoMarca'],
+      "modelo_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoModelo'],
+      "color_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoColor'],
+      "anio_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoAnio'],
       "tipo_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoTipo'],
-      "tipo_doc_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoTipoMarca'],
-      "doc_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoMarca'],
-      "nombre1_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoNombre1'],
-      "nombre2_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoNombre2']
-        ? this.updateVehiculoGroup.getRawValue()['updateVehiculoNombre2'] : null,
-      "apellido1_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoApellido1'],
-      "apellido2_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoApellido2']
-        ? this.updateVehiculoGroup.getRawValue()['updateVehiculoApellido2'] : null,
-      "fecha_nacimiento_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoFechaNac'],
-      "sexo_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoColor']
+      "estado_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoEstado'],
+      "pasajeros_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoPasajeros'],
+      "transmision_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoTransmision'],
+      "precio_dia_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoPrecioDia'],
+      "sucursal_vehiculo": this.updateVehiculoGroup.getRawValue()['updateVehiculoSucursal']
     };
 
     //se consume el servicio
@@ -308,40 +297,47 @@ export class VehiculosComponent implements OnInit {
 
     this.readVehiculoGroup = this.formBuilder.group({
       readVehiculoId: [],
-      readVehiculoTipo: [],
-      readVehiculoTipoMarca: [],
+      readVehiculoPlaca: [],
       readVehiculoMarca: [],
-      readVehiculoNombre1: [],
-      readVehiculoNombre2: [],
-      readVehiculoApellido1: [],
-      readVehiculoApellido2: [],
-      readVehiculoFechaNac: [],
-      readVehiculoColor: []
+      readVehiculoModelo: [],
+      readVehiculoColor: [],
+      readVehiculoAnio: [],
+      readVehiculoTipo: [],
+      readVehiculoEstado: [],
+      readVehiculoPasajeros: [],
+      readVehiculoTransmision: [],
+      readVehiculoPrecioDia: [],
+      readVehiculoSucursal: []
     });
 
     this.insertVehiculoGroup = this.formBuilder.group({
-      insertVehiculoTipo: [],
-      insertVehiculoTipoMarca: [],
+      insertVehiculoId: [],
+      insertVehiculoPlaca: [],
       insertVehiculoMarca: [],
-      insertVehiculoNombre1: [],
-      insertVehiculoNombre2: [],
-      insertVehiculoApellido1: [],
-      insertVehiculoApellido2: [],
-      insertVehiculoFechaNac: [],
-      insertVehiculoColor: []
+      insertVehiculoModelo: [],
+      insertVehiculoColor: [],
+      insertVehiculoAnio: [],
+      insertVehiculoTipo: [],
+      insertVehiculoEstado: [],
+      insertVehiculoPasajeros: [],
+      insertVehiculoTransmision: [],
+      insertVehiculoPrecioDia: [],
+      insertVehiculoSucursal: []
     });
 
     this.updateVehiculoGroup = this.formBuilder.group({
       updateVehiculoId: [],
-      updateVehiculoTipo: [],
-      updateVehiculoTipoMarca: [],
+      updateVehiculoPlaca: [],
       updateVehiculoMarca: [],
-      updateVehiculoNombre1: [],
-      updateVehiculoNombre2: [],
-      updateVehiculoApellido1: [],
-      updateVehiculoApellido2: [],
-      updateVehiculoFechaNac: [],
-      updateVehiculoColor: []
+      updateVehiculoModelo: [],
+      updateVehiculoColor: [],
+      updateVehiculoAnio: [],
+      updateVehiculoTipo: [],
+      updateVehiculoEstado: [],
+      updateVehiculoPasajeros: [],
+      updateVehiculoTransmision: [],
+      updateVehiculoPrecioDia: [],
+      updateVehiculoSucursal: []
     });
 
   }

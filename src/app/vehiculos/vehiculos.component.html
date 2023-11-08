@@ -1,1 +1,595 @@
-<p>vehiculos works!</p>
+<body class="d-flex">
+
+
+    <!--Menu-->
+    <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <i class="bi bi-car-front me-2"></i>
+            <span class="fs-4">RentAuto</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="personas" class="nav-link link-body-emphasis" aria-current="page">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#home"></use>
+                    </svg>
+                    Personas
+                </a>
+            </li>
+            <li>
+                <a href="contactos" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#speedometer2"></use>
+                    </svg>
+                    Contactos
+                </a>
+            </li>
+            <li>
+                <a href="vehiculos" class="nav-link active">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#table"></use>
+                    </svg>
+                    Vehículos
+                </a>
+            </li>
+            <li>
+                <a href="sucursales" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#grid"></use>
+                    </svg>
+                    Sucursales
+                </a>
+            </li>
+            <li>
+                <a href="reservas" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Reservas
+                </a>
+            </li>
+            <li>
+                <a href="universal" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Catálogo Universal
+                </a>
+            </li>
+        </ul>
+    </div><!--End Menu-->
+
+    <div class="w-100 d-flex flex-column">
+        <div class="content container p-5">
+
+            <div class="title">
+                <h1>Vehículos</h1>
+            </div>
+
+            <div class="pt-5 pb-2 d-flex w-100 justify-content-center gap-3">
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasCreate" aria-controls="offCanvasCreate">
+                    <i class="bi bi-plus-square-fill me-2"></i>
+                    Crear un vehículo
+                </button>
+
+                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasUpdate" aria-controls="offCanvasUpdate">
+                    <i class="bi bi-pencil-fill"></i>
+                    Editar un vehículo
+                </button>
+
+                <button class="btn btn-secondary" type="button" (click)="loadData()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Recargar lista
+                </button>
+
+
+            </div>
+
+            <!--Offcanvas para crear vehiculo-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasCreate"
+                aria-labelledby="offCanvasCreateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasCreateLabel">Crear un vehículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="insertVehiculo()" [formGroup]="insertVehiculoGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+
+
+                                <!--Placa Vehiculo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoPlaca" class="form-label">Placa Vehiculo</label>
+                                    <input type="text" class="form-control" name="insertVehiculoPlaca"
+                                        id="insertVehiculoPlaca" formControlName="insertVehiculoPlaca"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Marca de vehiculo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoMarca" class="form-label">Marca</label>
+                                    <select class="form-select" id="insertVehiculoMarca"
+                                        formControlName="insertVehiculoMarca">
+                                        <option *ngFor="let catalogo of vehiculoTiposMarca"
+                                            [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Modelo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoModelo" class="form-label">Modelo</label>
+                                    <input type="text" class="form-control" name="insertVehiculoModelo"
+                                        id="insertVehiculoModelo" formControlName="insertVehiculoModelo"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Color de vehiculo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoColor" class="form-label">Color</label>
+                                    <select class="form-select" id="insertVehiculoColor"
+                                        formControlName="insertVehiculoColor">
+                                        <option *ngFor="let catalogo of vehiculoTiposColor"
+                                            [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Año-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoAnio" class="form-label">Año</label>
+                                    <input type="text" class="form-control" name="insertVehiculoAnio"
+                                        id="insertVehiculoAnio" formControlName="insertVehiculoAnio"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Tipo de vehiculo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoTipo" class="form-label">Tipo de vehiculo</label>
+                                    <select class="form-select" id="insertVehiculoTipo"
+                                        formControlName="insertVehiculoTipo">
+                                        <option *ngFor="let catalogo of vehiculoTipos" [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Estado de vehiculo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoEstado" class="form-label">Estado</label>
+                                    <select class="form-select" id="insertVehiculoEstado"
+                                        formControlName="insertVehiculoEstado">
+                                        <option *ngFor="let catalogo of vehiculoTiposEstado"
+                                            [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Número de pasajeros-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoPasajeros" class="form-label">Número de pasajeros</label>
+                                    <input type="text" class="form-control" name="insertVehiculoPasajeros"
+                                        id="insertVehiculoPasajeros" formControlName="insertVehiculoPasajeros"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Transmision de vehiculo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoTransmision" class="form-label">Transmisión</label>
+                                    <select class="form-select" id="insertVehiculoTransmision"
+                                        formControlName="insertVehiculoTransmision">
+                                        <option *ngFor="let catalogo of vehiculoTiposTransmision"
+                                            [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Precio / día-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoPrecioDia" class="form-label">Precio / día</label>
+                                    <input type="text" class="form-control" name="insertVehiculoPrecioDia"
+                                        id="insertVehiculoPrecioDia" formControlName="insertVehiculoPrecioDia"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Sucursal de vehiculo-->
+                                <div class="mb-3">
+                                    <label for="insertVehiculoSucursal" class="form-label">Sucursal</label>
+                                    <select class="form-select" id="insertVehiculoSucursal"
+                                        formControlName="insertVehiculoSucursal">
+                                        <option *ngFor="let sucursal of vehiculoSucursales"
+                                            [value]="sucursal.id_sucursal">
+                                            {{sucursal.nombre_sucursal}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Crear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--offcanvas para editar vehiculo-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasUpdate"
+                aria-labelledby="offCanvasUpdateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar un vehículo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                        (click)="updateVehiculoGroup.reset(); vehiculoFound[0]=null;"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="updateVehiculo()" [formGroup]="updateVehiculoGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+                                <div class="mb-3">
+                                    <label for="updateVehiculoId" class="form-label">Vehiculo a editar</label>
+                                    <select class="form-select" id="updateVehiculoId" formControlName="updateVehiculoId"
+                                        (change)="getForUpdate()">
+                                        <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.id_vehiculo">
+                                            {{vehiculo.id_vehiculo}} - {{vehiculo.placa_vehiculo + " " +
+                                            vehiculo.marca_vehiculo + " " + vehiculo.modelo_vehiculo}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngFor="let found of vehiculoFound">
+                                    <!--ID-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoId" class="form-label">ID</label>
+                                        <input type="text" class="form-control" id="basic-url"
+                                            [attr.value]="found.id_vehiculo" name="updateVehiculoId"
+                                            id="updateVehiculoId" [value]="found.id_vehiculo"
+                                            formControlName="updateVehiculoId" [attr.disabled]="true" readonly>
+                                    </div>
+
+                                    <!--Placa Vehiculo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoPlaca" class="form-label">Placa Vehiculo</label>
+                                        <input type="text" class="form-control" name="updateVehiculoPlaca"
+                                            id="updateVehiculoPlaca" [value]="found.placa_vehiculo"
+                                            formControlName="updateVehiculoPlaca" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Marca de vehiculo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoMarca" class="form-label">Marca</label>
+                                        <select class="form-select" id="updateVehiculoMarca"
+                                            formControlName="updateVehiculoMarca">
+                                            <option *ngFor="let catalogo of vehiculoTiposMarca"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Modelo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoModelo" class="form-label">Modelo</label>
+                                        <input type="text" class="form-control" name="updateVehiculoModelo"
+                                            id="updateVehiculoModelo" [value]="found.nombre1_vehiculo"
+                                            formControlName="updateVehiculoModelo" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Color de vehiculo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoColor" class="form-label">Color</label>
+                                        <select class="form-select" id="updateVehiculoColor"
+                                            formControlName="updateVehiculoColor">
+                                            <option *ngFor="let catalogo of vehiculoTiposColor"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Año-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoAnio" class="form-label">Año</label>
+                                        <input type="text" class="form-control" name="updateVehiculoAnio"
+                                            id="updateVehiculoAnio" [value]="found.nombre2_vehiculo"
+                                            formControlName="updateVehiculoAnio" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Tipo de vehiculo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoTipo" class="form-label">Tipo de vehiculo</label>
+                                        <select class="form-select" id="updateVehiculoTipo"
+                                            formControlName="updateVehiculoTipo">
+                                            <option *ngFor="let catalogo of vehiculoTipos"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Estado de vehiculo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoEstado" class="form-label">Estado</label>
+                                        <select class="form-select" id="updateVehiculoEstado"
+                                            formControlName="updateVehiculoEstado">
+                                            <option *ngFor="let catalogo of vehiculoTiposEstado"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Número de pasajeros-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoPasajeros" class="form-label">Número de
+                                            pasajeros</label>
+                                        <input type="text" class="form-control" name="updateVehiculoPasajeros"
+                                            id="updateVehiculoPasajeros" [value]="found.apellido1_vehiculo"
+                                            formControlName="updateVehiculoPasajeros" placeholder="Ingresa un valor">
+
+                                    </div>
+                                    <!--Transmision de vehiculo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoTransmision" class="form-label">Transmisión</label>
+                                        <select class="form-select" id="updateVehiculoTransmision"
+                                            formControlName="updateVehiculoTransmision">
+                                            <option *ngFor="let catalogo of vehiculoTiposTransmision"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Precio / día-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoPrecioDia" class="form-label">Precio / día</label>
+                                        <input type="text" class="form-control" name="updateVehiculoPrecioDia"
+                                            id="updateVehiculoPrecioDia" [value]="found.apellido2_vehiculo"
+                                            formControlName="updateVehiculoPrecioDia" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Sucursal de vehiculo-->
+                                    <div class="mb-3">
+                                        <label for="updateVehiculoSucursal" class="form-label">Sucursal</label>
+                                        <select class="form-select" id="updateVehiculoSucursal"
+                                            formControlName="updateVehiculoSucursal">
+                                            <option *ngFor="let sucursal of vehiculoSucursales"
+                                                [value]="sucursal.id_sucursal">
+                                                {{sucursal.nombre_sucursal}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Actualizar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
+            <ng-container *ngIf="asyncReady else loading">
+
+                <!--Contenedor de la tabla-->
+                <div class="table-container py-5">
+                    <table class="table table-dark table-striped">
+                        <!--Cabecera-->
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Placa</th>
+                                <th scope="col">Marca</th>
+                                <th scope="col">Modelo</th>
+                                <th scope="col">Color</th>
+                                <th scope="col">Año</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Pasajeros</th>
+                                <th scope="col">Transmisión</th>
+                                <th scope="col">Precio/día</th>
+                                <th scope="col">Sucursal</th>
+                            </tr>
+                        </thead>
+
+                        <!--Listar todos los vehiculos-->
+                        <tbody>
+                            <tr *ngFor="let vehiculo of vehiculos">
+                                <th scope="row"> {{ vehiculo.id_vehiculo }} </th>
+                                <td> {{ vehiculo.placa_vehiculo }} </td>
+                                <td> {{ vehiculo.marca_vehiculo }} </td>
+                                <td> {{ vehiculo.modelo_vehiculo }} </td>
+                                <td> {{ vehiculo.color_vehiculo }} </td>
+                                <td> {{ vehiculo.anio_vehiculo }} </td>
+                                <td> {{ vehiculo.tipo_vehiculo }} </td>
+                                <td> {{ vehiculo.estado_vehiculo }} </td>
+                                <td> {{ vehiculo.pasajeros_vehiculo }} </td>
+                                <td> {{ vehiculo.transmision_vehiculo }} </td>
+                                <td> {{ vehiculo.precio_dia_vehiculo }} </td>
+                                <td> {{ vehiculo.sucursal_vehiculo }} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div><!--End Contenedor de la tabla-->
+
+
+                <!--Contenedor del acordeón-->
+                <h2>Buscar vehiculo</h2>
+                <div class="my-5 mx-3">
+                    <form [formGroup]="readVehiculoGroup">
+                        <!--Contenido del acordeón-->
+                        <div class="accordion-body ">
+
+                            <!--Cuadro de búsqueda-->
+                            <div class="row">
+                                <div class="col-11">
+                                    <select class="form-select" formControlName="readVehiculoId"
+                                        aria-label="Default select example">
+                                        <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.id_vehiculo">
+                                            {{vehiculo.id_vehiculo}} - {{vehiculo.placa_vehiculo + " " +
+                                            vehiculo.marca_vehiculo + " " + vehiculo.modelo_vehiculo}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button (click)="getById()" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 row w-100" *ngIf="vehiculoSearched.length > 0">
+                                <!--ID-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3 ">
+                                        <span class="input-group-text" for="readVehiculoId">ID</span>
+                                        <input type="text" class="form-control" name="readVehiculoId"
+                                            id="readVehiculoId" formControlName="readVehiculoId" [attr.disabled]="true"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!--Placa Vehiculo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoPlaca">Placa</span>
+                                        <input type="text" class="form-control" name="readVehiculoPlaca"
+                                            id="readVehiculoPlaca" formControlName="readVehiculoPlaca"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Marca Vehiculo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoMarca">Marca</span>
+                                        <input type="text" class="form-control" name="readVehiculoMarca"
+                                            id="readVehiculoMarca" formControlName="readVehiculoMarca"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Modelo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoModelo">Modelo</span>
+                                        <input type="text" class="form-control" name="readVehiculoModelo"
+                                            id="readVehiculoModelo" formControlName="readVehiculoModelo"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Color Vehiculo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoColor">Color</span>
+                                        <input type="text" class="form-control" name="readVehiculoColor"
+                                            id="readVehiculoColor" formControlName="readVehiculoColor"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Año-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoAnio">Año</span>
+                                        <input type="text" class="form-control" name="readVehiculoAnio"
+                                            id="readVehiculoAnio" formControlName="readVehiculoAnio"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Tipo de vehiculo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3 g-col-2">
+                                        <span class="input-group-text" for="readVehiculoTipo">Tipo de
+                                            vehiculo</span>
+                                        <input type="text" class="form-control" name="readVehiculoTipo"
+                                            id="readVehiculoTipo" formControlName="readVehiculoTipo"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Estado Vehiculo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoEstado">Estado</span>
+                                        <input type="text" class="form-control" name="readVehiculoEstado"
+                                            id="readVehiculoEstado" formControlName="readVehiculoEstado"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Número de pasajeros-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoPasajeros">Pasajeros</span>
+                                        <input type="text" class="form-control" name="readVehiculoPasajeros"
+                                            id="readVehiculoPasajeros" formControlName="readVehiculoPasajeros"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+                                
+                                <!--Transmisión Vehiculo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoTransmision">Transmisión</span>
+                                        <input type="text" class="form-control" name="readVehiculoTransmision"
+                                            id="readVehiculoTransmision" formControlName="readVehiculoTransmision"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Precio / día-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readVehiculoPrecioDia">Precio/Día</span>
+                                        <input type="text" class="form-control" name="readVehiculoPrecioDia"
+                                            id="readVehiculoPrecioDia" formControlName="readVehiculoPrecioDia"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div><!--End Contenedor del acordeón-->
+
+
+            </ng-container>
+
+            <ng-template #loading>
+                <div class="p-5 d-flex justify-content-center">
+                    <div class="spinner-border me-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span>Cargando...</span>
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+</body>
