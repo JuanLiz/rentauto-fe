@@ -32,10 +32,8 @@ export class PersonasComponent implements OnInit {
   //***************************************************************************
   // Definición de variables
 
-  //Lista de todos los catalogos
+  //Lista de todas las personas
   personas: any = [];
-  //Lista de todas las categorías        
-  PersonaTypes: any[] = [];
 
   // Tipos de personas traídos del Universal
   personaTipos: any[] = [];
@@ -47,18 +45,13 @@ export class PersonasComponent implements OnInit {
   personaSearched: any = [];
 
 
-  // Catálogo a editar
+  // Persona a editar
   personaFound: any = [];
   //Saber si ya se cargaron los datos del backend
   asyncReady = false;
 
   //***************************************************************************
   // Definición de formgroups para cada formulario
-
-
-  // Crear un objeto para guardar los formgroups
-  formGroups: { [key: string]: FormGroup } = {};
-
 
   // Grupo para lere persona
   readPersonaGroup = new FormGroup
@@ -114,22 +107,6 @@ export class PersonasComponent implements OnInit {
   //***************************************************************************
   // Definición de métodos
 
-  // Crear formgroups para cada catálogo
-  createFormGroups() {
-    this.personaTipos.forEach(catalogo => {
-      const formGroup = this.formBuilder.group({
-        id_catalogo: [catalogo.id_catalogo],
-        lista: [this.personas.filter((item: any) => item.llave_foranea_catalogo == catalogo.denominacion_catalogo)],
-        denominacion_catalogo: [catalogo.denominacion_catalogo],
-        llave_foranea_catalogo: [catalogo.llave_foranea_catalogo]
-      });
-
-      this.formGroups[catalogo.id_catalogo] = formGroup;
-
-    })
-  }
-
-
   // Cargar datos del backend
   public loadData() {
     this.asyncReady = false;
@@ -162,7 +139,6 @@ export class PersonasComponent implements OnInit {
     },
       error => { console.log(error) },
       () => {
-        this.createFormGroups();
         this.asyncReady = true;
       }
     );

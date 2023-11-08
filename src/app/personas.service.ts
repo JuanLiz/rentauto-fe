@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 const httpOptions =
 {
@@ -17,28 +17,6 @@ export class PersonasService {
   private Url: string = 'http://localhost:3000';
 
   constructor(private http: HttpClient) { }
-
-
-  // Extraer datos de la respuesta
-  private extractData(res: Response) {
-    //console.log("22");
-
-    let body = JSON.parse('' + res);
-    //console.log("23 A " + body);
-    return body || {};
-  }
-
-
-  // Manejo de errores
-  private handleError<T>(operation = 'operation', result?: T) {
-    //console.log("25 ");
-    return (error: any): Observable<T> => {
-
-      console.log(`${operation} failed: ${error.message}`);
-      return of(result as T)
-
-    };
-  }
 
 
   // Listar todas las personas

@@ -1,0 +1,384 @@
+<body class="d-flex">
+
+
+    <!--Menu-->
+    <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <i class="bi bi-car-front me-2"></i>
+            <span class="fs-4">RentAuto</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="personas" class="nav-link link-body-emphasis" aria-current="page">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#home"></use>
+                    </svg>
+                    Personas
+                </a>
+            </li>
+            <li>
+                <a href="contactos" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#speedometer2"></use>
+                    </svg>
+                    Contactos
+                </a>
+            </li>
+            <li>
+                <a href="vehiculos" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#table"></use>
+                    </svg>
+                    Vehículos
+                </a>
+            </li>
+            <li>
+                <a href="sucursales" class="nav-link active">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#grid"></use>
+                    </svg>
+                    Sucursales
+                </a>
+            </li>
+            <li>
+                <a href="reservas" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Reservas
+                </a>
+            </li>
+            <li>
+                <a href="universal" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Catálogo Universal
+                </a>
+            </li>
+        </ul>
+    </div><!--End Menu-->
+
+    <div class="w-100 d-flex flex-column">
+        <div class="content container p-5">
+
+            <div class="title">
+                <h1>Sucursales</h1>
+            </div>
+
+            <div class="pt-5 pb-2 d-flex w-100 justify-content-center gap-3">
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasCreate" aria-controls="offCanvasCreate">
+                    <i class="bi bi-plus-square-fill me-2"></i>
+                    Crear una sucursal
+                </button>
+
+                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasUpdate" aria-controls="offCanvasUpdate">
+                    <i class="bi bi-pencil-fill"></i>
+                    Editar una sucursal
+                </button>
+
+                <button class="btn btn-secondary" type="button" (click)="loadData()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Recargar lista
+                </button>
+
+
+            </div>
+
+            <!--Offcanvas para crear sucursal-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasCreate"
+                aria-labelledby="offCanvasCreateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasCreateLabel">Crear una sucursal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="insertSucursal()" [formGroup]="insertSucursalGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+
+                                <!--Nombre de la sucursal-->
+                                <div class="mb-3">
+                                    <label for="insertSucursalNombre" class="form-label">Nombre Sucursal</label>
+                                    <input type="text" class="form-control" name="insertSucursalNombre"
+                                        id="insertSucursalNombre" formControlName="insertSucursalNombre"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Dirección-->
+                                <div class="mb-3">
+                                    <label for="insertSucursalDireccion" class="form-label">Dirección</label>
+                                    <input type="text" class="form-control" name="insertSucursalDireccion"
+                                        id="insertSucursalDireccion" formControlName="insertSucursalDireccion"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Teléfono-->
+                                <div class="mb-3">
+                                    <label for="insertSucursalTelefono" class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control" name="insertSucursalTelefono"
+                                        id="insertSucursalTelefono" formControlName="insertSucursalTelefono"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Horario-->
+                                <div class="mb-3">
+                                    <label for="insertSucursalHorario" class="form-label">Horario</label>
+                                    <input type="text" class="form-control" name="insertSucursalHorario"
+                                        id="insertSucursalHorario" formControlName="insertSucursalHorario"
+                                        placeholder="Ingresa un valor">
+
+                                </div>
+
+                                <!--Ubicación-->
+                                <div class="mb-3">
+                                    <label for="insertSucursalUbicacion" class="form-label">Ubicación</label>
+                                    <input type="text" class="form-control" name="insertSucursalUbicacion"
+                                        id="insertSucursalUbicacion" formControlName="insertSucursalUbicacion"
+                                        placeholder="Ingresa un valor">
+                                </div>
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Crear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--offcanvas para editar sucursal-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasUpdate"
+                aria-labelledby="offCanvasUpdateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar una sucursal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                        (click)="updateSucursalGroup.reset(); sucursalFound[0]=null;"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="updateSucursal()" [formGroup]="updateSucursalGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+                                <div class="mb-3">
+                                    <label for="updateSucursalId" class="form-label">Sucursal a editar</label>
+                                    <select class="form-select" id="updateSucursalId" formControlName="updateSucursalId"
+                                        (change)="getForUpdate()">
+                                        <option *ngFor="let sucursal of sucursales" [value]="sucursal.id_sucursal">
+                                            {{sucursal.id_sucursal}} - {{ sucursal.nombre_sucursal }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngFor="let found of sucursalFound">
+                                    <!--ID-->
+                                    <div class="mb-3">
+                                        <label for="updateSucursalId" class="form-label">ID</label>
+                                        <input type="text" class="form-control" id="basic-url"
+                                            [attr.value]="found.id_sucursal" name="updateSucursalId"
+                                            id="updateSucursalId" [value]="found.id_sucursal"
+                                            formControlName="updateSucursalId" [attr.disabled]="true" readonly>
+                                    </div>
+
+                                    <!--Nombre Sucursal-->
+                                    <div class="mb-3">
+                                        <label for="updateSucursalNombre" class="form-label">Nombre Sucursal</label>
+                                        <input type="text" class="form-control" name="updateSucursalNombre"
+                                            id="updateSucursalNombre" [value]="found.doc_sucursal"
+                                            formControlName="updateSucursalNombre" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Dirección-->
+                                    <div class="mb-3">
+                                        <label for="updateSucursalDireccion" class="form-label">Dirección</label>
+                                        <input type="text" class="form-control" name="updateSucursalDireccion"
+                                            id="updateSucursalDireccion" [value]="found.nombre1_sucursal"
+                                            formControlName="updateSucursalDireccion" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Teléfono-->
+                                    <div class="mb-3">
+                                        <label for="updateSucursalTelefono" class="form-label">Teléfono</label>
+                                        <input type="text" class="form-control" name="updateSucursalTelefono"
+                                            id="updateSucursalTelefono" [value]="found.nombre2_sucursal"
+                                            formControlName="updateSucursalTelefono" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Horario-->
+                                    <div class="mb-3">
+                                        <label for="updateSucursalHorario" class="form-label">Horario</label>
+                                        <input type="text" class="form-control" name="updateSucursalHorario"
+                                            id="updateSucursalHorario" [value]="found.apellido1_sucursal"
+                                            formControlName="updateSucursalHorario" placeholder="Ingresa un valor">
+
+                                    </div>
+
+                                    <!--Ubicación-->
+                                    <div class="mb-3">
+                                        <label for="updateSucursalUbicacion" class="form-label">Ubicación</label>
+                                        <input type="text" class="form-control" name="updateSucursalUbicacion"
+                                            id="updateSucursalUbicacion" [value]="found.apellido2_sucursal"
+                                            formControlName="updateSucursalUbicacion" placeholder="Ingresa un valor">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Actualizar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
+            <ng-container *ngIf="asyncReady else loading">
+
+                <!--Contenedor de la tabla-->
+                <div class="table-container py-5">
+                    <table class="table table-dark table-striped">
+                        <!--Cabecera-->
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre Sucursal</th>
+                                <th scope="col">Dirección</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Horario</th>
+                                <th scope="col">Ubicación</th>
+                            </tr>
+                        </thead>
+
+                        <!--Listar todos los sucursals-->
+                        <tbody>
+                            <tr *ngFor="let sucursal of sucursales">
+                                <th scope="row"> {{ sucursal.id_sucursal }} </th>
+                                <td>{{ sucursal.nombre_sucursal }} </td>
+                                <td>{{ sucursal.direccion_sucursal }} </td>
+                                <td>{{ sucursal.telefono_sucursal }} </td>
+                                <td>{{ sucursal.horario_sucursal }} </td>
+                                <td>{{ sucursal.ubicacion_sucursal }} </td>
+                        </tbody>
+                    </table>
+
+                </div><!--End Contenedor de la tabla-->
+
+
+                <!--Contenedor del acordeón-->
+                <h2>Buscar sucursal</h2>
+                <div class="my-5 mx-3">
+                    <form [formGroup]="readSucursalGroup">
+                        <!--Contenido del acordeón-->
+                        <div class="accordion-body ">
+
+                            <!--Cuadro de búsqueda-->
+                            <div class="row">
+                                <div class="col-11">
+                                    <select class="form-select" formControlName="readSucursalId"
+                                        aria-label="Default select example">
+                                        <option *ngFor="let sucursal of sucursales" [value]="sucursal.id_sucursal">
+                                            {{sucursal.id_sucursal}} - {{ sucursal.nombre_sucursal }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button (click)="getById()" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 row w-100" *ngIf="sucursalSearched.length > 0">
+                                <!--ID-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3 ">
+                                        <span class="input-group-text" for="readSucursalId">ID</span>
+                                        <input type="text" class="form-control" name="readSucursalId"
+                                            id="readSucursalId" formControlName="readSucursalId" [attr.disabled]="true"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!--Nombre Sucursal-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readSucursalNombre">Nombre Sucursal</span>
+                                        <input type="text" class="form-control" name="readSucursalNombre"
+                                            id="readSucursalNombre" formControlName="readSucursalNombre"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Dirección-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readSucursalDireccion">Dirección</span>
+                                        <input type="text" class="form-control" name="readSucursalDireccion"
+                                            id="readSucursalDireccion" formControlName="readSucursalDireccion"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Teléfono-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readSucursalTelefono">Teléfono</span>
+                                        <input type="text" class="form-control" name="readSucursalTelefono"
+                                            id="readSucursalTelefono" formControlName="readSucursalTelefono"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Horario-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readSucursalHorario">Horario</span>
+                                        <input type="text" class="form-control" name="readSucursalHorario"
+                                            id="readSucursalHorario" formControlName="readSucursalHorario"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Ubicación-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readSucursalUbicacion">Ubicación</span>
+                                        <input type="text" class="form-control" name="readSucursalUbicacion"
+                                            id="readSucursalUbicacion" formControlName="readSucursalUbicacion"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div><!--End Contenedor del acordeón-->
+
+
+            </ng-container>
+
+            <ng-template #loading>
+                <div class="p-5 d-flex justify-content-center">
+                    <div class="spinner-border me-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span>Cargando...</span>
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+</body>

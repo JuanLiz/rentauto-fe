@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 //import { map, catchError, tap } from 'rxjs/operators';
 
 
@@ -20,23 +20,7 @@ export class SercatalogounivService {
 
   constructor(private http: HttpClient) { }
 
-  private extractData(res: Response) {
-    let body = JSON.parse('' + res);
-    return body || {};
-  }
-
-
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    //console.log("25 ");
-    return (error: any): Observable<T> => {
-
-      console.log(`${operation} failed: ${error.message}`);
-      return of(result as T)
-
-    };
-  }
-
+  
   // Listar todos los catalogos
   getUniversales(): Observable<any> {
     return this.http.get(this.Url + "/universal", httpOptions);
