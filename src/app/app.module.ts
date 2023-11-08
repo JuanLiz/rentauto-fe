@@ -14,6 +14,7 @@ import { AppComponent } from './appComponent/app.component';
 import { CatalogoUniversalComponent } from './catalogo-universal/catalogo-universal.component';
 //import { PersonaComponent } from './persona/persona.component';
 
+import { ContactosComponent } from './contactos/contactos.component';
 import { PersonasComponent } from './personas/personas.component';
 import { SercatalogounivService } from './sercatalogouniv.service';
 import { SucursalesComponent } from './sucursales/sucursales.component';
@@ -42,6 +43,10 @@ const appRoutes: Routes =
   {
     path: 'sucursales',
     component: SucursalesComponent,   
+  },
+  {
+    path: 'contactos',
+    component: ContactosComponent,
   }
 ];
   
@@ -56,6 +61,7 @@ const appRoutes: Routes =
     PersonasComponent,
     VehiculosComponent,
     SucursalesComponent,
+    ContactosComponent,
   ],
   imports: 
   [
