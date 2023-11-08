@@ -130,7 +130,8 @@
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasUpdate" aria-labelledby="offCanvasUpdateLabel">
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar un catálogo</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" (click)="updateUniversalGroup.reset(); universalFound[0]=null;"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+            (click)="updateUniversalGroup.reset(); universalFound[0]=null;"></button>
         </div>
         <div class="offcanvas-body h-100">
           <form (ngSubmit)="updateUniversal()" [formGroup]="updateUniversalGroup" class="h-100">
@@ -139,7 +140,7 @@
                 <div class="mb-3">
                   <label for="updateUniversalId" class="form-label">Catálogo a editar</label>
                   <select class="form-select" id="updateUniversalId" formControlName="updateUniversalId"
-                    (change)="getById()">
+                    (change)="getForUpdate()">
                     <option *ngFor="let caese of Universal" [value]="caese.id_catalogo">
                       {{caese.denominacion_catalogo}} - {{caese.llave_foranea_catalogo}}
                     </option>
@@ -149,10 +150,10 @@
                   <div class="mb-3">
                     <label for="createUniversalId" class="form-label">ID</label>
                     <input type="text" class="form-control" id="basic-url" [attr.value]="found.id_catalogo"
-                    name="updateUniversalId" id="updateUniversalId" [value]="found.id_catalogo"
-                    formControlName="updateUniversalId" [attr.disabled]="true" readonly>
+                      name="updateUniversalId" id="updateUniversalId" [value]="found.id_catalogo"
+                      formControlName="updateUniversalId" [attr.disabled]="true" readonly>
                   </div>
-                  
+
                   <div class="mb-3">
                     <label for="createUniversalText" class="form-label">Denominación</label>
                     <input type="text" class="form-control" name="updateUniversalText" id="updateUniversalText"
@@ -188,8 +189,6 @@
 
         <!--Contenedor de la tabla-->
         <div class="table-container py-5">
-
-          <h2>{{tituloCataUniLista}}</h2>
           <table class="table table-dark table-striped">
             <!--Cabecera-->
             <thead>

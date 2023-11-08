@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "CatalogoUFE": {
+    "RentAuto": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/CatalogoUFE",
+            "outputPath": "dist/RentAuto",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "CatalogoUFE:build:production"
+              "browserTarget": "RentAuto:build:production"
             },
             "development": {
-              "browserTarget": "CatalogoUFE:build:development"
+              "browserTarget": "RentAuto:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "CatalogoUFE:build"
+            "browserTarget": "RentAuto:build"
           }
         },
         "test": {
@@ -111,5 +111,5 @@
       }
     }
   },
-  "defaultProject": "CatalogoUFE"
+  "defaultProject": "RentAuto"
 }

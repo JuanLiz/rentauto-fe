@@ -5,16 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 // Librería para poder consumir el servicio
 //import { HttpModule, } from '@angular/http';
 import { HttpClientModule, } from '@angular/common/http';
-import { RouterModule, Routes} from '@angular/router';
-import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
 
 
 
-import { AppComponent } from './appComponent/app.component';  
+import { AppComponent } from './appComponent/app.component';
 import { CatalogoUniversalComponent } from './catalogo-universal/catalogo-universal.component';
 //import { PersonaComponent } from './persona/persona.component';
 
-import {SercatalogounivService } from './sercatalogouniv.service';
+import { PersonasComponent } from './personas/personas.component';
+import { SercatalogounivService } from './sercatalogouniv.service';
 
 
 const appRoutes: Routes = 
@@ -28,10 +29,10 @@ const appRoutes: Routes =
     path: 'universal',
     component:CatalogoUniversalComponent,
   },
-  // {
-  //   path: 'Personas',
-  //   component: PersonaComponent,   
-  // }
+  {
+    path: 'personas',
+    component: PersonasComponent,   
+  }
 ];
   
 //--------------------------------------------------------------
@@ -42,7 +43,7 @@ const appRoutes: Routes =
   [
     AppComponent,
     CatalogoUniversalComponent,
-    //PersonaComponent
+    PersonasComponent,
   ],
   imports: 
   [

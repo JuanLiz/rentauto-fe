@@ -1,0 +1,534 @@
+<body class="d-flex">
+
+
+    <!--Menu-->
+    <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <i class="bi bi-car-front me-2"></i>
+            <span class="fs-4">RentAuto</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="personas" class="nav-link active" aria-current="page">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#home"></use>
+                    </svg>
+                    Personas
+                </a>
+            </li>
+            <li>
+                <a href="contactos" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#speedometer2"></use>
+                    </svg>
+                    Contactos
+                </a>
+            </li>
+            <li>
+                <a href="vehiculos" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#table"></use>
+                    </svg>
+                    Vehículos
+                </a>
+            </li>
+            <li>
+                <a href="sucursales" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#grid"></use>
+                    </svg>
+                    Sucursales
+                </a>
+            </li>
+            <li>
+                <a href="reservas" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Reservas
+                </a>
+            </li>
+            <li>
+                <a href="universal" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Catálogo Universal
+                </a>
+            </li>
+        </ul>
+    </div><!--End Menu-->
+
+    <div class="w-100 d-flex flex-column">
+        <div class="content container p-5">
+
+            <div class="title">
+                <h1>Personas</h1>
+            </div>
+
+            <div class="pt-5 pb-2 d-flex w-100 justify-content-center gap-3">
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasCreate" aria-controls="offCanvasCreate">
+                    <i class="bi bi-plus-square-fill me-2"></i>
+                    Crear una persona
+                </button>
+
+                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasUpdate" aria-controls="offCanvasUpdate">
+                    <i class="bi bi-pencil-fill"></i>
+                    Editar una persona
+                </button>
+
+                <button class="btn btn-secondary" type="button" (click)="loadData()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Recargar lista
+                </button>
+
+
+            </div>
+
+            <!--Offcanvas para crear catálogo-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasCreate"
+                aria-labelledby="offCanvasCreateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasCreateLabel">Crear una persona</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="insertPersona()" [formGroup]="insertPersonaGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+                                <!--Tipo de persona-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaTipo" class="form-label">Tipo de persona</label>
+                                    <select class="form-select" id="insertPersonaTipo"
+                                        formControlName="insertPersonaTipo">
+                                        <option *ngFor="let catalogo of personaTipos" [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Tipo de documento-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaTipoDoc" class="form-label">Tipo de documento</label>
+                                    <select class="form-select" id="insertPersonaTipoDoc"
+                                        formControlName="insertPersonaTipoDoc">
+                                        <option *ngFor="let catalogo of personaTiposDoc" [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Número de documento-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaDoc" class="form-label">Número de documento</label>
+                                    <input type="text" class="form-control" name="insertPersonaDoc"
+                                        id="insertPersonaDoc" formControlName="insertPersonaDoc"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Primer nombre-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaNombre1" class="form-label">Primer nombre</label>
+                                    <input type="text" class="form-control" name="insertPersonaNombre1"
+                                        id="insertPersonaNombre1" formControlName="insertPersonaNombre1"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Segundo nombre-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaNombre2" class="form-label">Segundo nombre</label>
+                                    <input type="text" class="form-control" name="insertPersonaNombre2"
+                                        id="insertPersonaNombre2" formControlName="insertPersonaNombre2"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Primer apellido-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaApellido1" class="form-label">Primer apellido</label>
+                                    <input type="text" class="form-control" name="insertPersonaApellido1"
+                                        id="insertPersonaApellido1" formControlName="insertPersonaApellido1"
+                                        placeholder="Ingresa un valor">
+
+                                </div>
+
+                                <!--Segundo apellido-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaApellido2" class="form-label">Segundo apellido</label>
+                                    <input type="text" class="form-control" name="insertPersonaApellido2"
+                                        id="insertPersonaApellido2" formControlName="insertPersonaApellido2"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Fecha de nacimiento-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaFechaNac" class="form-label">Fecha de
+                                        nacimiento</label>
+                                    <input type="date" class="form-control" name="insertPersonaFechaNac"
+                                        id="insertPersonaFechaNac" formControlName="insertPersonaFechaNac"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+                                <!--Sexo-->
+                                <div class="mb-3">
+                                    <label for="insertPersonaSexo" class="form-label">Sexo</label>
+                                    <select class="form-select" id="insertPersonaSexo"
+                                        formControlName="insertPersonaSexo">
+                                        <option *ngFor="let catalogo of personaTiposSexo"
+                                            [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Crear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--offcanvas para editar catálogo-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasUpdate"
+                aria-labelledby="offCanvasUpdateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar una persona</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                        (click)="updatePersonaGroup.reset(); personaFound[0]=null;"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="updatePersona()" [formGroup]="updatePersonaGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+                                <div class="mb-3">
+                                    <label for="updatePersonaId" class="form-label">Persona a editar</label>
+                                    <select class="form-select" id="updatePersonaId" formControlName="updatePersonaId"
+                                        (change)="getForUpdate()">
+                                        <option *ngFor="let persona of personas" [value]="persona.id_persona">
+                                            {{persona.id_persona}} - {{ persona.nombre1_persona + " " +
+                                            persona?.nombre2_persona + " " + persona.apellido1_persona + " " +
+                                            persona.apellido2_persona }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngFor="let found of personaFound">
+                                    <!--ID-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaId" class="form-label">ID</label>
+                                        <input type="text" class="form-control" id="basic-url"
+                                            [attr.value]="found.id_persona" name="updatePersonaId" id="updatePersonaId"
+                                            [value]="found.id_persona" formControlName="updatePersonaId"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+
+                                    <!--Tipo de persona-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaTipo" class="form-label">Tipo de persona</label>
+                                        <select class="form-select" id="updatePersonaTipo"
+                                            formControlName="updatePersonaTipo">
+                                            <option *ngFor="let catalogo of personaTipos"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Tipo de documento-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaTipoDoc" class="form-label">Tipo de documento</label>
+                                        <select class="form-select" id="updatePersonaTipoDoc"
+                                            formControlName="updatePersonaTipoDoc">
+                                            <option *ngFor="let catalogo of personaTiposDoc"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Número de documento-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaDoc" class="form-label">Número de documento</label>
+                                        <input type="text" class="form-control" name="updatePersonaDoc"
+                                            id="updatePersonaDoc" [value]="found.doc_persona"
+                                            formControlName="updatePersonaDoc" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Primer nombre-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaNombre1" class="form-label">Primer nombre</label>
+                                        <input type="text" class="form-control" name="updatePersonaNombre1"
+                                            id="updatePersonaNombre1" [value]="found.nombre1_persona"
+                                            formControlName="updatePersonaNombre1" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Segundo nombre-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaNombre2" class="form-label">Segundo nombre</label>
+                                        <input type="text" class="form-control" name="updatePersonaNombre2"
+                                            id="updatePersonaNombre2" [value]="found.nombre2_persona"
+                                            formControlName="updatePersonaNombre2" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Primer apellido-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaApellido1" class="form-label">Primer apellido</label>
+                                        <input type="text" class="form-control" name="updatePersonaApellido1"
+                                            id="updatePersonaApellido1" [value]="found.apellido1_persona"
+                                            formControlName="updatePersonaApellido1" placeholder="Ingresa un valor">
+
+                                    </div>
+
+                                    <!--Segundo apellido-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaApellido2" class="form-label">Segundo apellido</label>
+                                        <input type="text" class="form-control" name="updatePersonaApellido2"
+                                            id="updatePersonaApellido2" [value]="found.apellido2_persona"
+                                            formControlName="updatePersonaApellido2" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Fecha de nacimiento-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaFechaNac" class="form-label">Fecha de
+                                            nacimiento</label>
+                                        <input type="date" class="form-control" name="updatePersonaFechaNac"
+                                            id="updatePersonaFechaNac" [value]="found.fecha_nacimiento_persona"
+                                            formControlName="updatePersonaFechaNac" placeholder="Ingresa un valor">
+                                    </div>
+
+                                    <!--Sexo-->
+                                    <div class="mb-3">
+                                        <label for="updatePersonaSexo" class="form-label">Sexo</label>
+                                        <select class="form-select" id="updatePersonaSexo"
+                                            formControlName="updatePersonaSexo">
+                                            <option *ngFor="let catalogo of personaTiposSexo"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Actualizar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
+            <ng-container *ngIf="asyncReady else loading">
+
+                <!--Contenedor de la tabla-->
+                <div class="table-container py-5">
+                    <table class="table table-dark table-striped">
+                        <!--Cabecera-->
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Tipo Persona</th>
+                                <th scope="col">Tipo Documento</th>
+                                <th scope="col">Núm. Documento</th>
+                                <th scope="col">Primer Nombre</th>
+                                <th scope="col">Segundo Nombre</th>
+                                <th scope="col">Primer Apellido</th>
+                                <th scope="col">Segundo Apellido</th>
+                                <th scope="col">Fecha Nacimiento</th>
+                                <th scope="col">Sexo</th>
+                            </tr>
+                        </thead>
+
+                        <!--Listar todos los catálogos-->
+                        <tbody>
+                            <tr *ngFor="let persona of personas">
+                                <th scope="row"> {{ persona.id_persona }} </th>
+                                <td>{{ persona.tipo_persona }} </td>
+                                <td>{{ persona.tipo_doc_persona }} </td>
+                                <td>{{ persona.doc_persona }} </td>
+                                <td>{{ persona.nombre1_persona }} </td>
+                                <td>{{ persona.nombre2_persona }} </td>
+                                <td>{{ persona.apellido1_persona }} </td>
+                                <td>{{ persona.apellido2_persona }} </td>
+                                <td>{{ persona.fecha_nacimiento_persona }} </td>
+                                <td>{{ persona.sexo_persona }} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div><!--End Contenedor de la tabla-->
+
+
+                <!--Contenedor del acordeón-->
+                <h2>Buscar persona</h2>
+                <div class="my-5 mx-3">
+                    <form [formGroup]="readPersonaGroup">
+                        <!--Contenido del acordeón-->
+                        <div class="accordion-body ">
+
+                            <!--Cuadro de búsqueda-->
+                            <div class="row">
+                                <div class="col-11">
+                                    <select class="form-select" formControlName="readPersonaId"
+                                        aria-label="Default select example">
+                                        <option *ngFor="let persona of personas" [value]="persona.id_persona">
+                                            {{persona.id_persona}} - {{ persona.nombre1_persona + " " +
+                                            persona?.nombre2_persona + " " + persona.apellido1_persona + " " +
+                                            persona.apellido2_persona }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button (click)="getById()" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 row w-100" *ngIf="personaSearched.length > 0">
+                                <!--ID-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3 ">
+                                        <span class="input-group-text" for="readPersonaId">ID</span>
+                                        <input type="text" class="form-control" name="readPersonaId" id="readPersonaId"
+                                            formControlName="readPersonaId" [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Tipo de persona-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3 g-col-2">
+                                        <span class="input-group-text" for="readPersonaTipo">Tipo de
+                                            persona</span>
+                                        <input type="text" class="form-control" name="readPersonaTipo"
+                                            id="readPersonaTipo" formControlName="readPersonaTipo"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Tipo de documento-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaTipoDoc">Tipo de
+                                            documento</span>
+                                        <input type="text" class="form-control" name="readPersonaTipoDoc"
+                                            id="readPersonaTipoDoc" formControlName="readPersonaTipoDoc"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+
+                                <!--Número de documento-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaDoc">Número de
+                                            documento</span>
+                                        <input type="text" class="form-control" name="readPersonaDoc"
+                                            id="readPersonaDoc" formControlName="readPersonaDoc" [attr.disabled]="true"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!--Primer nombre-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaNombre1">Primer
+                                            nombre</span>
+                                        <input type="text" class="form-control" name="readPersonaNombre1"
+                                            id="readPersonaNombre1" formControlName="readPersonaNombre1"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Segundo nombre-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaNombre2">Segundo
+                                            nombre</span>
+                                        <input type="text" class="form-control" name="readPersonaNombre2"
+                                            id="readPersonaNombre2" formControlName="readPersonaNombre2"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Primer apellido-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaApellido1">Primer
+                                            apellido</span>
+                                        <input type="text" class="form-control" name="readPersonaApellido1"
+                                            id="readPersonaApellido1" formControlName="readPersonaApellido1"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Segundo apellido-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaApellido2">Segundo
+                                            apellido</span>
+                                        <input type="text" class="form-control" name="readPersonaApellido2"
+                                            id="readPersonaApellido2" formControlName="readPersonaApellido2"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Fecha de nacimiento-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaFechaNac">Fecha de
+                                            nacimiento</span>
+                                        <input type="date" class="form-control" name="readPersonaFechaNac"
+                                            id="readPersonaFechaNac" formControlName="readPersonaFechaNac"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Sexo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readPersonaSexo">Sexo</span>
+                                        <input type="text" class="form-control" name="readPersonaSexo"
+                                            id="readPersonaSexo" formControlName="readPersonaSexo"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div><!--End Contenedor del acordeón-->
+
+
+            </ng-container>
+
+            <ng-template #loading>
+                <div class="p-5 d-flex justify-content-center">
+                    <div class="spinner-border me-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span>Cargando...</span>
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+</body>

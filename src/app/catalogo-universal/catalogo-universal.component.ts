@@ -117,7 +117,7 @@ export class CatalogoUniversalComponent implements OnInit {
 
 
   // Buscar catálogo por id
-  public getById() {
+  public getForUpdate() {
     let idSearch = this.updateUniversalGroup.getRawValue()['updateUniversalId'];
 
     // Buscar en el array con filter
