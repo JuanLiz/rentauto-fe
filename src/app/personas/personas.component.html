@@ -204,7 +204,7 @@
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar una persona</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
-                        (click)="updatePersonaGroup.reset(); personaFound[0]=null;"></button>
+                        (click)="updatePersonaGroup.reset()"></button>
                 </div>
                 <div class="offcanvas-body h-100">
                     <form (ngSubmit)="updatePersona()" [formGroup]="updatePersonaGroup" class="h-100">
@@ -222,14 +222,6 @@
                                     </select>
                                 </div>
                                 <div *ngFor="let found of personaFound">
-                                    <!--ID-->
-                                    <div class="mb-3">
-                                        <label for="updatePersonaId" class="form-label">ID</label>
-                                        <input type="text" class="form-control" id="basic-url"
-                                            [attr.value]="found.id_persona" name="updatePersonaId" id="updatePersonaId"
-                                            [value]="found.id_persona" formControlName="updatePersonaId"
-                                            [attr.disabled]="true" readonly>
-                                    </div>
 
                                     <!--Tipo de persona-->
                                     <div class="mb-3">

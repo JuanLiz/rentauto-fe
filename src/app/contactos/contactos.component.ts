@@ -36,6 +36,7 @@ export class ContactosComponent implements OnInit {
 
   //Lista de todas las contactos
   contactos: any = [];
+  contactosShow: any = [];
 
   // Lista de todas las personas
   personas: any = [];
@@ -104,15 +105,22 @@ export class ContactosComponent implements OnInit {
 
     ]).subscribe(([contactos, personasContactos, tiposContatos]) => {
       this.contactos = contactos as any[];
+      this.contactosShow = contactos as any[];
       this.personas = personasContactos as any[];
       this.contactoTipos = tiposContatos as any[];
 
     },
       error => { console.log(error) },
       () => {
-        this.asyncReady = true;
-      }
-    );
+        this.asyncReady = true
+        this.contactosShow.forEach((element: any) => {
+          element.persona_contacto = this.personas.find((x: any) => x.doc_persona == element.persona_contacto)
+          element.persona_contacto = element.persona_contacto?.nombre1_persona
+            + " " + (element.persona_contacto?.nombre2_persona ? element.persona_contacto?.nombre2_persona : "")
+              + " " + element.persona_contacto?.apellido1_persona
+              + " " + (element.persona_contacto?.apellido2_persona ? element.persona_contacto?.apellido2_persona : "")
+        });
+      })
   }
 
 
@@ -121,10 +129,16 @@ export class ContactosComponent implements OnInit {
     this.servi.getContacto(this.readContactoGroup.getRawValue()['readContactoId']).subscribe((data: []) => {
       this.contactoSearched = data;
 
+      let personaTemp = this.personas.find((item: any) => item.doc_persona == this.contactoSearched[0].persona_contacto)
+      personaTemp = personaTemp?.nombre1_persona
+        + " " + (personaTemp?.nombre2_persona ? personaTemp?.nombre2_persona : "")
+          + " " + personaTemp?.apellido1_persona
+          + " " + (personaTemp?.apellido2_persona ? personaTemp?.apellido2_persona : "")
+
       // Preparar datos para cargar en el formulario
       let forupd = {
         readContactoId: this.contactoSearched[0].id_contacto,
-        readContactoPersona: this.contactoSearched[0].persona_contacto,
+        readContactoPersona: personaTemp,
         readContactoContacto: this.contactoSearched[0].contacto_contacto,
         readContactoTipo: this.contactoSearched[0].tipo_contacto,
       }

@@ -234,7 +234,7 @@
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar un vehículo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
-                        (click)="updateVehiculoGroup.reset(); vehiculoFound[0]=null;"></button>
+                        (click)="updateVehiculoGroup.reset()"></button>
                 </div>
                 <div class="offcanvas-body h-100">
                     <form (ngSubmit)="updateVehiculo()" [formGroup]="updateVehiculoGroup" class="h-100">
@@ -251,14 +251,6 @@
                                     </select>
                                 </div>
                                 <div *ngFor="let found of vehiculoFound">
-                                    <!--ID-->
-                                    <div class="mb-3">
-                                        <label for="updateVehiculoId" class="form-label">ID</label>
-                                        <input type="text" class="form-control" id="basic-url"
-                                            [attr.value]="found.id_vehiculo" name="updateVehiculoId"
-                                            id="updateVehiculoId" [value]="found.id_vehiculo"
-                                            formControlName="updateVehiculoId" [attr.disabled]="true" readonly>
-                                    </div>
 
                                     <!--Placa Vehiculo-->
                                     <div class="mb-3">

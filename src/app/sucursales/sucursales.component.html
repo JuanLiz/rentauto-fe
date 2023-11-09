@@ -162,7 +162,7 @@
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar una sucursal</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
-                        (click)="updateSucursalGroup.reset(); sucursalFound[0]=null;"></button>
+                        (click)="updateSucursalGroup.reset()"></button>
                 </div>
                 <div class="offcanvas-body h-100">
                     <form (ngSubmit)="updateSucursal()" [formGroup]="updateSucursalGroup" class="h-100">
@@ -178,14 +178,6 @@
                                     </select>
                                 </div>
                                 <div *ngFor="let found of sucursalFound">
-                                    <!--ID-->
-                                    <div class="mb-3">
-                                        <label for="updateSucursalId" class="form-label">ID</label>
-                                        <input type="text" class="form-control" id="basic-url"
-                                            [attr.value]="found.id_sucursal" name="updateSucursalId"
-                                            id="updateSucursalId" [value]="found.id_sucursal"
-                                            formControlName="updateSucursalId" [attr.disabled]="true" readonly>
-                                    </div>
 
                                     <!--Nombre Sucursal-->
                                     <div class="mb-3">

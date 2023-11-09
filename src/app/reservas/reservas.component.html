@@ -1,0 +1,502 @@
+<body class="d-flex">
+
+
+    <!--Menu-->
+    <div class="sidebar d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <i class="bi bi-car-front me-2"></i>
+            <span class="fs-4">RentAuto</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="personas" class="nav-link link-body-emphasis" aria-current="page">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#home"></use>
+                    </svg>
+                    Personas
+                </a>
+            </li>
+            <li>
+                <a href="contactos" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#speedometer2"></use>
+                    </svg>
+                    Contactos
+                </a>
+            </li>
+            <li>
+                <a href="vehiculos" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#table"></use>
+                    </svg>
+                    Vehículos
+                </a>
+            </li>
+            <li>
+                <a href="sucursales" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#grid"></use>
+                    </svg>
+                    Sucursales
+                </a>
+            </li>
+            <li>
+                <a href="reservas" class="nav-link active">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Reservas
+                </a>
+            </li>
+            <li>
+                <a href="universal" class="nav-link link-body-emphasis">
+                    <svg class="bi pe-none me-2" width="16" height="16">
+                        <use xlink:href="#people-circle"></use>
+                    </svg>
+                    Catálogo Universal
+                </a>
+            </li>
+        </ul>
+    </div><!--End Menu-->
+
+    <div class="w-100 d-flex flex-column">
+        <div class="content container p-5">
+
+            <div class="title">
+                <h1>Reservas</h1>
+            </div>
+
+            <div class="pt-5 pb-2 d-flex w-100 justify-content-center gap-3">
+                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasCreate" aria-controls="offCanvasCreate">
+                    <i class="bi bi-plus-square-fill me-2"></i>
+                    Crear una reserva
+                </button>
+
+                <button class="btn btn-secondary" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offCanvasUpdate" aria-controls="offCanvasUpdate">
+                    <i class="bi bi-pencil-fill"></i>
+                    Editar una reserva
+                </button>
+
+                <button class="btn btn-secondary" type="button" (click)="loadData()">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Recargar lista
+                </button>
+
+
+            </div>
+
+            <!--Offcanvas para crear reserva-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasCreate"
+                aria-labelledby="offCanvasCreateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasCreateLabel">Crear una reserva</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="insertReserva()" [formGroup]="insertReservaGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+                                <!--Cliente-->
+                                <div class="mb-3">
+                                    <label for="insertReservaCliente" class="form-label">Cliente</label>
+                                    <select class="form-select" id="insertReservaCliente"
+                                        formControlName="insertReservaCliente">
+                                        <option *ngFor="let persona of personas" [value]="persona.id_persona">
+                                            {{ persona.nombre1_persona + " "}}
+                                            {{persona?.nombre2_persona ? persona.nombre2_persona + " " : " "}}
+                                            {{persona.apellido1_persona + " "}}
+                                            {{ persona?.apellido2_persona ? persona.apellido2_persona + " " : " " }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Vehículo-->
+                                <div class="mb-3">
+                                    <label for="insertReservaVehiculo" class="form-label">Vehículo</label>
+                                    <select class="form-select" id="insertReservaVehiculo"
+                                        formControlName="insertReservaVehiculo">
+                                        <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.id_vehiculo">
+                                            {{vehiculo.placa_vehiculo}} - {{vehiculo.marca_vehiculo}}
+                                            {{vehiculo.modelo_vehiculo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Fecha de inicio-->
+                                <div class="mb-3">
+                                    <label for="insertReservaFechaInicio" class="form-label">Fecha de inicio</label>
+                                    <input type="datetime-local" class="form-control" name="insertReservaFechaInicio"
+                                        id="insertReservaFechaInicio" formControlName="insertReservaFechaInicio">
+                                </div>
+
+                                <!--Fecha de finalización-->
+                                <div class="mb-3">
+                                    <label for="insertReservaFechaFinaliza" class="form-label">Fecha de
+                                        finalización</label>
+                                    <input type="datetime-local" class="form-control" name="insertReservaFechaFinaliza"
+                                        id="insertReservaFechaFinaliza" formControlName="insertReservaFechaFinaliza">
+                                </div>
+
+                                <!--Estado-->
+                                <div class="mb-3">
+                                    <label for="insertReservaEstado" class="form-label">Estado</label>
+                                    <select class="form-select" id="insertReservaEstado"
+                                        formControlName="insertReservaEstado">
+                                        <option *ngFor="let catalogo of reservaTiposEstado"
+                                            [value]="catalogo.id_catalogo">
+                                            {{catalogo.denominacion_catalogo}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <!--Estado de entrega al cliente-->
+                                <div class="mb-3">
+                                    <label for="insertReservaEstadoEntregado" class="form-label">Estado de entrega al
+                                        cliente</label>
+                                    <textarea type="text" class="form-control" name="insertReservaEstadoEntregado"
+                                        id="insertReservaEstadoEntregado" formControlName="insertReservaEstadoEntregado"
+                                        placeholder="Ingresa un valor"> </textarea>
+                                </div>
+
+                                <!--Estado de devolución del cliente-->
+                                <div class="mb-3">
+                                    <label for="insertReservaEstadoRecibido" class="form-label">Estado de devolución del
+                                        cliente</label>
+                                    <textarea type="text" class="form-control" name="insertReservaEstadoRecibido"
+                                        id="insertReservaEstadoRecibido" formControlName="insertReservaEstadoRecibido"
+                                        placeholder="Ingresa un valor"> </textarea>
+
+                                </div>
+
+                                <!--Costo-->
+                                <div class="mb-3">
+                                    <label for="insertReservaCosto" class="form-label">Costo</label>
+                                    <input type="text" class="form-control" name="insertReservaCosto"
+                                        id="insertReservaCosto" formControlName="insertReservaCosto"
+                                        placeholder="Ingresa un valor">
+                                </div>
+
+
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Crear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--offcanvas para editar reserva-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offCanvasUpdate"
+                aria-labelledby="offCanvasUpdateLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offCanvasUpdateLabel">Editar una reserva</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                        (click)="updateReservaGroup.reset()"></button>
+                </div>
+                <div class="offcanvas-body h-100">
+                    <form (ngSubmit)="updateReserva()" [formGroup]="updateReservaGroup" class="h-100">
+                        <div class="d-flex flex-align-start flex-column h-100 w-100 ">
+                            <div class="w-100 h-100 mb-auto overflow-y-auto">
+                                <div class="mb-3">
+                                    <label for="updateReservaId" class="form-label">Reserva a editar</label>
+                                    <select class="form-select" id="updateReservaId" formControlName="updateReservaId"
+                                        (change)="getForUpdate()">
+                                        <option *ngFor="let reserva of reservas" [value]="reserva.id_reserva">
+                                            {{reserva.id_reserva}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div *ngFor="let found of reservaFound">
+
+                                    <!--Cliente-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaCliente" class="form-label">Cliente</label>
+                                        <select class="form-select" id="updateReservaCliente"
+                                            formControlName="updateReservaCliente">
+                                            <option *ngFor="let persona of personas" [value]="persona.id_persona">
+                                                {{ persona.nombre1_persona + " "}}
+                                                {{persona?.nombre2_persona ? persona.nombre2_persona + " " : " "}}
+                                                {{persona.apellido1_persona + " "}}
+                                                {{ persona?.apellido2_persona ? persona.apellido2_persona + " " : " " }}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Vehículo-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaVehiculo" class="form-label">Vehículo</label>
+                                        <select class="form-select" id="updateReservaVehiculo"
+                                            formControlName="updateReservaVehiculo">
+                                            <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.id_vehiculo">
+                                                {{vehiculo.placa_vehiculo}} - {{vehiculo.marca_vehiculo}}
+                                                {{vehiculo.modelo_vehiculo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Fecha de inicio-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaFechaInicio" class="form-label">Fecha de inicio</label>
+                                        <input type="datetime-local" class="form-control"
+                                            name="updateReservaFechaInicio" id="updateReservaFechaInicio"
+                                            [value]="found.fecha_inicio_reserva"
+                                            formControlName="updateReservaFechaInicio">
+                                    </div>
+
+                                    <!--Fecha de finalización-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaFechaFinaliza" class="form-label">Fecha de
+                                            finalización</label>
+                                        <input type="datetime-local" class="form-control"
+                                            name="updateReservaFechaFinaliza" id="updateReservaFechaFinaliza"
+                                            [value]="found.nombre1_reserva"
+                                            formControlName="updateReservaFechaFinaliza">
+                                    </div>
+
+                                    <!--Estado-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaEstado" class="form-label">Estado</label>
+                                        <select class="form-select" id="updateReservaEstado"
+                                            formControlName="updateReservaEstado">
+                                            <option *ngFor="let catalogo of reservaTiposEstado"
+                                                [value]="catalogo.id_catalogo">
+                                                {{catalogo.denominacion_catalogo}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <!--Estado de entrega al cliente-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaEstadoEntregado" class="form-label">Estado de entrega
+                                            al cliente</label>
+                                        <textarea type="text" class="form-control" name="updateReservaEstadoEntregado"
+                                            id="updateReservaEstadoEntregado" [value]="found.nombre2_reserva"
+                                            formControlName="updateReservaEstadoEntregado"
+                                            placeholder="Ingresa un valor"> </textarea>
+                                    </div>
+
+                                    <!--Estado de devolución del cliente-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaEstadoRecibido" class="form-label">Estado de devolución
+                                            del cliente</label>
+                                        <textarea type="text" class="form-control" name="updateReservaEstadoRecibido"
+                                            id="updateReservaEstadoRecibido" [value]="found.apellido1_reserva"
+                                            formControlName="updateReservaEstadoRecibido"
+                                            placeholder="Ingresa un valor"> </textarea>
+
+                                    </div>
+
+                                    <!--Costo-->
+                                    <div class="mb-3">
+                                        <label for="updateReservaCosto" class="form-label">Costo</label>
+                                        <input type="text" class="form-control" name="updateReservaCosto"
+                                            id="updateReservaCosto" [value]="found.apellido2_reserva"
+                                            formControlName="updateReservaCosto" placeholder="Ingresa un valor">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div style="max-height: 60px; min-height: 60px"
+                                class="d-flex justify-content-center order-2 w-100">
+                                <div class="align-self-center w-100">
+                                    <button type="submit" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"
+                                        aria-label="Close">Actualizar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+
+            <!--Gemerar tarjetas por cada FormGroup de universalTipos -->
+            <ng-container *ngIf="asyncReady else loading">
+
+                <!--Contenedor de la tabla-->
+                <div class="table-container py-5">
+                    <table class="table table-dark table-striped">
+                        <!--Cabecera-->
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Vehículo reservado</th>
+                                <th scope="col">Fecha de inicio</th>
+                                <th scope="col">Fecha de finalización</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Estado de entrega al cliente</th>
+                                <th scope="col">Estado de devolución del cliente</th>
+                                <th scope="col">Costo</th>
+                            </tr>
+                        </thead>
+
+                        <!--Listar todos los reservas-->
+                        <tbody>
+                            <tr *ngFor="let reserva of reservasShow">
+                                <th scope="row"> {{ reserva.id_reserva }} </th>
+                                <td>{{ reserva.cliente_reserva }}</td>
+                                <td>{{ reserva.vehiculo_reserva }}</td>
+                                <td>{{ reserva.fecha_inicio_reserva }}</td>
+                                <td>{{ reserva.fecha_finaliza_reserva }}</td>
+                                <td>{{ reserva.estado_reserva }}</td>
+                                <td>{{ reserva.estado_entregado_reserva }}</td>
+                                <td>{{ reserva.estado_recibido_reserva }}</td>
+                                <td>{{ reserva.costo_reserva }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div><!--End Contenedor de la tabla-->
+
+
+                <!--Contenedor del acordeón-->
+                <h2>Buscar reserva</h2>
+                <div class="my-5 mx-3">
+                    <form [formGroup]="readReservaGroup">
+                        <!--Contenido del acordeón-->
+                        <div class="accordion-body ">
+
+                            <!--Cuadro de búsqueda-->
+                            <div class="row">
+                                <div class="col-11">
+                                    <select class="form-select" formControlName="readReservaId"
+                                        aria-label="Default select example">
+                                        <option *ngFor="let reserva of reservas" [value]="reserva.id_reserva">
+                                            {{reserva.id_reserva}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button (click)="getById()" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 row w-100" *ngIf="reservaSearched.length > 0">
+                                <!--ID-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3 ">
+                                        <span class="input-group-text" for="readReservaId">ID</span>
+                                        <input type="text" class="form-control" name="readReservaId" id="readReservaId"
+                                            formControlName="readReservaId" [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Cliente-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3 g-col-2">
+                                        <span class="input-group-text" for="readReservaCliente">Cliente</span>
+                                        <input type="text" class="form-control" name="readReservaCliente"
+                                            id="readReservaCliente" formControlName="readReservaCliente"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Vehículo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readReservaVehiculo">Vehículo</span>
+                                        <input type="text" class="form-control" name="readReservaVehiculo"
+                                            id="readReservaVehiculo" formControlName="readReservaVehiculo"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+
+                                <!--Fecha de inicio-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readReservaFechaInicio">Fecha de
+                                            inicio</span>
+                                        <input type="text" class="form-control" name="readReservaFechaInicio"
+                                            id="readReservaFechaInicio" formControlName="readReservaFechaInicio"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Fecha de finalización-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readReservaFechaFinaliza">Fecha de
+                                            finalización</span>
+                                        <input type="text" class="form-control" name="readReservaFechaFinaliza"
+                                            id="readReservaFechaFinaliza" formControlName="readReservaFechaFinaliza"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+                                <!--Costo-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readReservaCosto">Costo</span>
+                                        <input type="text" class="form-control" name="readReservaCosto"
+                                            id="readReservaCosto" formControlName="readReservaCosto"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+                                </div>
+
+                                <!--Estado de entrega al cliente-->
+                                <div class="col-6">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readReservaEstadoEntregado">Estado de
+                                            entrega al cliente</span>
+                                        <textarea type="text" class="form-control" name="readReservaEstadoEntregado"
+                                            id="readReservaEstadoEntregado" formControlName="readReservaEstadoEntregado"
+                                            [attr.disabled]="true" readonly> </textarea>
+                                    </div>
+                                </div>
+
+                                <!--Estado de devolución del cliente-->
+                                <div class="col-6">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readReservaEstadoRecibido">Estado de
+                                            devolución del cliente</span>
+                                        <textarea input type="text" class="form-control" name="readReservaEstadoRecibido"
+                                            id="readReservaEstadoRecibido" formControlName="readReservaEstadoRecibido"
+                                            [attr.disabled]="true" readonly> </textarea>
+                                    </div>
+                                </div>
+
+                                <!--Estado-->
+                                <div class="col-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" for="readReservaEstado">Estado</span>
+                                        <input type="text" class="form-control" name="readReservaEstado"
+                                            id="readReservaEstado" formControlName="readReservaEstado"
+                                            [attr.disabled]="true" readonly>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div><!--End Contenedor del acordeón-->
+
+
+            </ng-container>
+
+            <ng-template #loading>
+                <div class="p-5 d-flex justify-content-center">
+                    <div class="spinner-border me-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span>Cargando...</span>
+                </div>
+            </ng-template>
+        </div>
+
+    </div>
+</body>

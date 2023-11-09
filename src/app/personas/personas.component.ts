@@ -182,161 +182,161 @@ export class PersonasComponent implements OnInit {
       this.readPersonaGroup.patchValue(forupd);
       console.log(this.readPersonaGroup)
     });
-}
+  }
 
 
   // Buscar persona por id para actualizar
   public getForUpdate() {
-  let idSearch = this.updatePersonaGroup.getRawValue()['updatePersonaId'];
+    let idSearch = this.updatePersonaGroup.getRawValue()['updatePersonaId'];
 
-  // Llamar al servicio
-  this.personaFound = this.servi.getPersona(idSearch).subscribe((data: []) => {
-    this.personaFound = data;
+    // Llamar al servicio
+    this.personaFound = this.servi.getPersona(idSearch).subscribe((data: []) => {
+      this.personaFound = data;
 
-    // Formatear fecha
-    var fecha = new Date(this.personaFound[0].fecha_nacimiento_persona);
-    var dia = String(fecha.getDate());
-    // Con cero a la izquierda
-    if (parseInt(dia) < 10) {
-      dia = '0' + dia;
-    }
+      // Formatear fecha
+      var fecha = new Date(this.personaFound[0].fecha_nacimiento_persona);
+      var dia = String(fecha.getDate());
+      // Con cero a la izquierda
+      if (parseInt(dia) < 10) {
+        dia = '0' + dia;
+      }
 
-    var mes = String(fecha.getMonth() + 1);
+      var mes = String(fecha.getMonth() + 1);
 
-    // Con cero a la izquierda
-    if (parseInt(mes) < 10) {
-      mes = '0' + mes;
-    }
-    var año = fecha.getFullYear();
-    this.personaFound[0].fecha_nacimiento_persona = año + '-' + mes + '-' + dia;
+      // Con cero a la izquierda
+      if (parseInt(mes) < 10) {
+        mes = '0' + mes;
+      }
+      var año = fecha.getFullYear();
+      this.personaFound[0].fecha_nacimiento_persona = año + '-' + mes + '-' + dia;
 
-    // Preparar datos para cargar en el formulario
-    let forupd = {
-      updatePersonaId: this.personaFound[0].id_persona,
-      updatePersonaTipo: this.personaTipos.find((item: any) => item.denominacion_catalogo == this.personaFound[0].tipo_persona).id_catalogo,
-      updatePersonaTipoDoc: this.personaTiposDoc.find((item: any) => item.denominacion_catalogo == this.personaFound[0].tipo_doc_persona).id_catalogo,
-      updatePersonaDoc: this.personaFound[0].doc_persona,
-      updatePersonaNombre1: this.personaFound[0].nombre1_persona,
-      updatePersonaNombre2: this.personaFound[0].nombre2_persona ? this.personaFound[0].nombre2_persona : '',
-      updatePersonaApellido1: this.personaFound[0].apellido1_persona,
-      updatePersonaApellido2: this.personaFound[0].apellido2_persona ? this.personaFound[0].apellido2_persona : '',
-      updatePersonaFechaNac: this.personaFound[0].fecha_nacimiento_persona,
-      updatePersonaSexo: this.personaTiposSexo.find((item: any) => item.denominacion_catalogo == this.personaFound[0].sexo_persona).id_catalogo
-    }
-    this.updatePersonaGroup.patchValue(forupd);
-    console.log(this.updatePersonaGroup)
-  });
+      // Preparar datos para cargar en el formulario
+      let forupd = {
+        updatePersonaId: this.personaFound[0].id_persona,
+        updatePersonaTipo: this.personaTipos.find((item: any) => item.denominacion_catalogo == this.personaFound[0].tipo_persona).id_catalogo,
+        updatePersonaTipoDoc: this.personaTiposDoc.find((item: any) => item.denominacion_catalogo == this.personaFound[0].tipo_doc_persona).id_catalogo,
+        updatePersonaDoc: this.personaFound[0].doc_persona,
+        updatePersonaNombre1: this.personaFound[0].nombre1_persona,
+        updatePersonaNombre2: this.personaFound[0].nombre2_persona ? this.personaFound[0].nombre2_persona : '',
+        updatePersonaApellido1: this.personaFound[0].apellido1_persona,
+        updatePersonaApellido2: this.personaFound[0].apellido2_persona ? this.personaFound[0].apellido2_persona : '',
+        updatePersonaFechaNac: this.personaFound[0].fecha_nacimiento_persona,
+        updatePersonaSexo: this.personaTiposSexo.find((item: any) => item.denominacion_catalogo == this.personaFound[0].sexo_persona).id_catalogo
+      }
+      this.updatePersonaGroup.patchValue(forupd);
+      console.log(this.updatePersonaGroup)
+    });
 
 
 
-}
+  }
 
   // Insertar un nuevo catálogo
   public insertPersona() {
 
-  //JSON armado
-  var body = {
-    "tipo_persona": this.insertPersonaGroup.getRawValue()['insertPersonaTipo'],
-    "tipo_doc_persona": this.insertPersonaGroup.getRawValue()['insertPersonaTipoDoc'],
-    "doc_persona": this.insertPersonaGroup.getRawValue()['insertPersonaDoc'],
-    "nombre1_persona": this.insertPersonaGroup.getRawValue()['insertPersonaNombre1'],
-    "nombre2_persona": this.insertPersonaGroup.getRawValue()['insertPersonaNombre2']
-      ? this.insertPersonaGroup.getRawValue()['insertPersonaNombre2'] : null,
-    "apellido1_persona": this.insertPersonaGroup.getRawValue()['insertPersonaApellido1'],
-    "apellido2_persona": this.insertPersonaGroup.getRawValue()['insertPersonaApellido2']
-      ? this.insertPersonaGroup.getRawValue()['insertPersonaApellido2'] : null,
-    "fecha_nacimiento_persona": this.insertPersonaGroup.getRawValue()['insertPersonaFechaNac'],
-    "sexo_persona": this.insertPersonaGroup.getRawValue()['insertPersonaSexo']
-  };
+    //JSON armado
+    var body = {
+      "tipo_persona": this.insertPersonaGroup.getRawValue()['insertPersonaTipo'],
+      "tipo_doc_persona": this.insertPersonaGroup.getRawValue()['insertPersonaTipoDoc'],
+      "doc_persona": this.insertPersonaGroup.getRawValue()['insertPersonaDoc'],
+      "nombre1_persona": this.insertPersonaGroup.getRawValue()['insertPersonaNombre1'],
+      "nombre2_persona": this.insertPersonaGroup.getRawValue()['insertPersonaNombre2']
+        ? this.insertPersonaGroup.getRawValue()['insertPersonaNombre2'] : null,
+      "apellido1_persona": this.insertPersonaGroup.getRawValue()['insertPersonaApellido1'],
+      "apellido2_persona": this.insertPersonaGroup.getRawValue()['insertPersonaApellido2']
+        ? this.insertPersonaGroup.getRawValue()['insertPersonaApellido2'] : null,
+      "fecha_nacimiento_persona": this.insertPersonaGroup.getRawValue()['insertPersonaFechaNac'],
+      "sexo_persona": this.insertPersonaGroup.getRawValue()['insertPersonaSexo']
+    };
 
-  //se consume el servicio
-  this.servi.insertPersona(body).then(res => {
-    console.log(res)
-  }).catch(err => {
-    console.log(err)
-  })
-  //this.LimpiarFormulario();
-  this.insertPersonaGroup.reset();
-  // Cargr datos de nuevo
-  this.loadData()
-}
+    //se consume el servicio
+    this.servi.insertPersona(body).then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
+    //this.LimpiarFormulario();
+    this.insertPersonaGroup.reset();
+    // Cargr datos de nuevo
+    this.loadData()
+  }
 
 
   // Actualizar un catálogo
   public updatePersona() {
 
-  //JSON armado
-  var cadena = {
-    "id_persona": this.updatePersonaGroup.getRawValue()['updatePersonaId'],
-    "tipo_persona": this.updatePersonaGroup.getRawValue()['updatePersonaTipo'],
-    "tipo_doc_persona": this.updatePersonaGroup.getRawValue()['updatePersonaTipoDoc'],
-    "doc_persona": this.updatePersonaGroup.getRawValue()['updatePersonaDoc'],
-    "nombre1_persona": this.updatePersonaGroup.getRawValue()['updatePersonaNombre1'],
-    "nombre2_persona": this.updatePersonaGroup.getRawValue()['updatePersonaNombre2']
-      ? this.updatePersonaGroup.getRawValue()['updatePersonaNombre2'] : null,
-    "apellido1_persona": this.updatePersonaGroup.getRawValue()['updatePersonaApellido1'],
-    "apellido2_persona": this.updatePersonaGroup.getRawValue()['updatePersonaApellido2']
-      ? this.updatePersonaGroup.getRawValue()['updatePersonaApellido2'] : null,
-    "fecha_nacimiento_persona": this.updatePersonaGroup.getRawValue()['updatePersonaFechaNac'],
-    "sexo_persona": this.updatePersonaGroup.getRawValue()['updatePersonaSexo']
-  };
+    //JSON armado
+    var cadena = {
+      "id_persona": this.updatePersonaGroup.getRawValue()['updatePersonaId'],
+      "tipo_persona": this.updatePersonaGroup.getRawValue()['updatePersonaTipo'],
+      "tipo_doc_persona": this.updatePersonaGroup.getRawValue()['updatePersonaTipoDoc'],
+      "doc_persona": this.updatePersonaGroup.getRawValue()['updatePersonaDoc'],
+      "nombre1_persona": this.updatePersonaGroup.getRawValue()['updatePersonaNombre1'],
+      "nombre2_persona": this.updatePersonaGroup.getRawValue()['updatePersonaNombre2']
+        ? this.updatePersonaGroup.getRawValue()['updatePersonaNombre2'] : null,
+      "apellido1_persona": this.updatePersonaGroup.getRawValue()['updatePersonaApellido1'],
+      "apellido2_persona": this.updatePersonaGroup.getRawValue()['updatePersonaApellido2']
+        ? this.updatePersonaGroup.getRawValue()['updatePersonaApellido2'] : null,
+      "fecha_nacimiento_persona": this.updatePersonaGroup.getRawValue()['updatePersonaFechaNac'],
+      "sexo_persona": this.updatePersonaGroup.getRawValue()['updatePersonaSexo']
+    };
 
-  //se consume el servicio
-  this.servi.updatePersona(cadena).then(res => {
-    console.log(res)
-  }).catch(err => {
-    console.log(err)
-  })
+    //se consume el servicio
+    this.servi.updatePersona(cadena).then(res => {
+      console.log(res)
+    }).catch(err => {
+      console.log(err)
+    })
 
-  this.updatePersonaGroup.reset();
-  // Cargr datos de nuevo
-  this.loadData()
-}
+    this.updatePersonaGroup.reset();
+    // Cargr datos de nuevo
+    this.loadData()
+  }
 
 
-// OnInit. Acciones apenas inicia la página
-ngOnInit(): void {
+  // OnInit. Acciones apenas inicia la página
+  ngOnInit(): void {
 
-  // Cargar datos del backend al abrir la página
-  this.loadData()
+    // Cargar datos del backend al abrir la página
+    this.loadData()
 
     this.readPersonaGroup = this.formBuilder.group({
-    readPersonaId: [],
-    readPersonaTipo: [],
-    readPersonaTipoDoc: [],
-    readPersonaDoc: [],
-    readPersonaNombre1: [],
-    readPersonaNombre2: [],
-    readPersonaApellido1: [],
-    readPersonaApellido2: [],
-    readPersonaFechaNac: [],
-    readPersonaSexo: []
-  });
+      readPersonaId: [],
+      readPersonaTipo: [],
+      readPersonaTipoDoc: [],
+      readPersonaDoc: [],
+      readPersonaNombre1: [],
+      readPersonaNombre2: [],
+      readPersonaApellido1: [],
+      readPersonaApellido2: [],
+      readPersonaFechaNac: [],
+      readPersonaSexo: []
+    });
 
-  this.insertPersonaGroup = this.formBuilder.group({
-    insertPersonaTipo: [],
-    insertPersonaTipoDoc: [],
-    insertPersonaDoc: [],
-    insertPersonaNombre1: [],
-    insertPersonaNombre2: [],
-    insertPersonaApellido1: [],
-    insertPersonaApellido2: [],
-    insertPersonaFechaNac: [],
-    insertPersonaSexo: []
-  });
+    this.insertPersonaGroup = this.formBuilder.group({
+      insertPersonaTipo: [],
+      insertPersonaTipoDoc: [],
+      insertPersonaDoc: [],
+      insertPersonaNombre1: [],
+      insertPersonaNombre2: [],
+      insertPersonaApellido1: [],
+      insertPersonaApellido2: [],
+      insertPersonaFechaNac: [],
+      insertPersonaSexo: []
+    });
 
-  this.updatePersonaGroup = this.formBuilder.group({
-    updatePersonaId: [],
-    updatePersonaTipo: [],
-    updatePersonaTipoDoc: [],
-    updatePersonaDoc: [],
-    updatePersonaNombre1: [],
-    updatePersonaNombre2: [],
-    updatePersonaApellido1: [],
-    updatePersonaApellido2: [],
-    updatePersonaFechaNac: [],
-    updatePersonaSexo: []
-  });
+    this.updatePersonaGroup = this.formBuilder.group({
+      updatePersonaId: [],
+      updatePersonaTipo: [],
+      updatePersonaTipoDoc: [],
+      updatePersonaDoc: [],
+      updatePersonaNombre1: [],
+      updatePersonaNombre2: [],
+      updatePersonaApellido1: [],
+      updatePersonaApellido2: [],
+      updatePersonaFechaNac: [],
+      updatePersonaSexo: []
+    });
 
-}
+  }
 }

@@ -16,6 +16,7 @@ import { CatalogoUniversalComponent } from './catalogo-universal/catalogo-univer
 
 import { ContactosComponent } from './contactos/contactos.component';
 import { PersonasComponent } from './personas/personas.component';
+import { ReservasComponent } from './reservas/reservas.component';
 import { SercatalogounivService } from './sercatalogouniv.service';
 import { SucursalesComponent } from './sucursales/sucursales.component';
 import { VehiculosComponent } from './vehiculos/vehiculos.component';
@@ -47,6 +48,10 @@ const appRoutes: Routes =
   {
     path: 'contactos',
     component: ContactosComponent,
+  },
+  {
+    path: 'reservas',
+    component: ReservasComponent,
   }
 ];
   
@@ -62,6 +67,7 @@ const appRoutes: Routes =
     VehiculosComponent,
     SucursalesComponent,
     ContactosComponent,
+    ReservasComponent,
   ],
   imports: 
   [
